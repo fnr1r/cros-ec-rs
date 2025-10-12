@@ -4,3 +4,14 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+constcat = "0.6"
+derive-new = "0.7"
+easy-ext = "1"
+libc = { version = "0.2", features = ["extra_traits"] }
+paste = "1"
+plain = "0.2"
+rustix = "1"
+slice-dst = "1.6"
+strum = { version = "0.27", features = ["derive"] }
+thiserror = "2"
+trait-set = "0.3"
