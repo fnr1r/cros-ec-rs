@@ -14,4 +14,3 @@ rustix = "1"
 slice-dst = "1.6"
 strum = { version = "0.27", features = ["derive"] }
 thiserror = "2"
-trait-set = "0.3"
