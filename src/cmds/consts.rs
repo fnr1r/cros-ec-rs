@@ -22,4 +22,5 @@ macro_rules! cmd {
 cmd!(proto_version, 0);
 cmd!(hello, 0);
 cmd!(get_cmd_versions, 0, 1);
+cmd!(get_features, 0);
 cmd!(fw_charge_limit, 0);
