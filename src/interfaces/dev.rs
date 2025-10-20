@@ -97,8 +97,8 @@ impl<F: AsFd> EcHasCommand for EcDev<F> {
     unsafe fn ec_command(
         &self,
         command: &EcCommandMeta,
-        input: &[u8],
-        output: &mut [u8],
+        input: Option<&[u8]>,
+        output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError> {
         let fd = &self.file;
         let f = match self.version {

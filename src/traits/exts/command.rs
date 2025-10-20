@@ -25,6 +25,6 @@ pub impl<T: EcHasCommand> T {
         // SAFETY: types are repr(C) and match what's expected
         let input = unsafe { as_bytes(input) };
         let output = unsafe { as_mut_bytes(output) };
-        unsafe { T::ec_command(self, command, input, output) }
+        unsafe { T::ec_command(self, command, Some(input), Some(output)) }
     }
 }

@@ -106,16 +106,22 @@ fn slice_copy_min_len<T: Copy>(input: &[T], output: &mut [T]) -> usize {
 pub unsafe fn ec_command_dev_v2(
     fd: impl AsFd,
     command: &EcCommandMeta,
-    input: &[u8],
-    output: &mut [u8],
+    input: Option<&[u8]>,
+    output: Option<&mut [u8]>,
 ) -> Result<usize, EcCommandError> {
     let EcCommandMeta {
         command, version, ..
     } = *command;
-    let mut cmd = CrosEcCommandV2::new(version, command, input.len() as u32, output.len() as u32);
-    slice_copy_min_len(input, &mut cmd.0.slice);
+    let outsize = input.map(|e| e.len() as u32).unwrap_or_default();
+    let insize = output.as_ref().map(|e| e.len() as u32).unwrap_or_default();
+    let mut cmd = CrosEcCommandV2::new(version, command, outsize, insize);
+    if let Some(input) = input {
+        slice_copy_min_len(input, &mut cmd.0.slice);
+    }
     let real_data_len = unsafe { ioctl(fd, &mut cmd) }?;
     EcError::from_ec_result(cmd.0.header.result)?;
-    slice_copy_min_len(&cmd.0.slice, output);
+    if let Some(output) = output {
+        slice_copy_min_len(&cmd.0.slice, output);
+    }
     Ok(real_data_len)
 }
