@@ -112,7 +112,7 @@ pub unsafe fn ec_command_dev_v2(
     let EcCommandMeta {
         command, version, ..
     } = *command;
-    let mut cmd = CrosEcCommandV2::new(version, command, output.len() as u32, input.len() as u32);
+    let mut cmd = CrosEcCommandV2::new(version, command, input.len() as u32, output.len() as u32);
     slice_copy_min_len(input, &mut cmd.0.slice);
     let real_data_len = unsafe { ioctl(fd, &mut cmd) }?;
     EcError::from_ec_result(cmd.0.header.result)?;

@@ -22,11 +22,11 @@ struct CrosEcCommand {
     // Command to send (prefixed with `EC_CMD_`)
     command: CommandT,
     // Outgoing data to EC
-    outdata: *mut u8,
+    outdata: *const u8,
     // Outgoing length in bytes
     outsize: u32,
     // Where to put the incoming data from EC
-    indata: *const u8,
+    indata: *mut u8,
     // On call, how much we can accept. On return, how much we got.
     insize: u32,
     // EC's response to the command (separate from communication failure)
@@ -39,10 +39,10 @@ impl CrosEcCommand {
         let EcCommandMeta {
             command, version, ..
         } = *command;
-        let outdata = output.as_mut_ptr();
-        let outsize = output.len() as u32;
-        let indata = input.as_ptr();
-        let insize = input.len() as u32;
+        let outdata = input.as_ptr();
+        let outsize = input.len() as u32;
+        let indata = output.as_mut_ptr();
+        let insize = output.len() as u32;
         Self::new(version, command, outdata, outsize, indata, insize)
     }
 }
