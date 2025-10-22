@@ -8,7 +8,7 @@ use rustix::{
 
 use crate::{
     error::{EcCommandError, EcError},
-    types::{CommandT, EcCommandMeta, VersionT},
+    types::{CommandT, EcCommandInfo, VersionT},
     utils::slice::{as_raw_mut_parts, as_raw_parts},
 };
 
@@ -37,13 +37,11 @@ struct CrosEcCommand {
 
 impl CrosEcCommand {
     fn new_sliced(
-        command: &EcCommandMeta,
+        command: &EcCommandInfo,
         input: Option<&[u8]>,
         output: Option<&mut [u8]>,
     ) -> Self {
-        let EcCommandMeta {
-            command, version, ..
-        } = *command;
+        let EcCommandInfo { command, version } = *command;
         let (outdata, outsize) = input.map(as_raw_parts).unwrap_or_default();
         let outsize = outsize as u32;
         let (indata, insize) = output.map(as_raw_mut_parts).unwrap_or_default();
@@ -81,7 +79,7 @@ unsafe impl Ioctl for CrosEcCommand {
 
 pub unsafe fn ec_command_dev_v1(
     fd: impl AsFd,
-    command: &EcCommandMeta,
+    command: &EcCommandInfo,
     input: Option<&[u8]>,
     output: Option<&mut [u8]>,
 ) -> Result<usize, EcCommandError> {

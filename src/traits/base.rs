@@ -1,6 +1,6 @@
 use crate::{
     error::EcCommandError,
-    types::{EcCommandMeta, MaskT},
+    types::{EcCommandInfo, MaskT},
 };
 
 pub trait EcHasCommand {
@@ -13,7 +13,7 @@ pub trait EcHasCommand {
     /// This calls abstract EC commands. It *should* be memory safe though.
     unsafe fn ec_command(
         &self,
-        command: &EcCommandMeta,
+        command: &EcCommandInfo,
         input: Option<&[u8]>,
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError>;

@@ -17,7 +17,7 @@ use crate::{
     consts::CROS_EC_DEV_PATH,
     error::EcCommandError,
     traits::EcHasCommand,
-    types::EcCommandMeta,
+    types::EcCommandInfo,
 };
 
 mod chk_v1;
@@ -96,7 +96,7 @@ impl EcDev {
 impl<F: AsFd> EcHasCommand for EcDev<F> {
     unsafe fn ec_command(
         &self,
-        command: &EcCommandMeta,
+        command: &EcCommandInfo,
         input: Option<&[u8]>,
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError> {

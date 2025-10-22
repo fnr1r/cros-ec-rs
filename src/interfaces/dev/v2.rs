@@ -15,7 +15,7 @@ use slice_dst::SliceWithHeader;
 
 use crate::{
     error::{EcCommandError, EcError},
-    types::EcCommandMeta,
+    types::EcCommandInfo,
     types::{CommandT, VersionT},
 };
 
@@ -105,13 +105,11 @@ fn slice_copy_min_len<T: Copy>(input: &[T], output: &mut [T]) -> usize {
 
 pub unsafe fn ec_command_dev_v2(
     fd: impl AsFd,
-    command: &EcCommandMeta,
+    command: &EcCommandInfo,
     input: Option<&[u8]>,
     output: Option<&mut [u8]>,
 ) -> Result<usize, EcCommandError> {
-    let EcCommandMeta {
-        command, version, ..
-    } = *command;
+    let EcCommandInfo { command, version } = *command;
     let outsize = input.map(|e| e.len() as u32).unwrap_or_default();
     let insize = output.as_ref().map(|e| e.len() as u32).unwrap_or_default();
     let mut cmd = CrosEcCommandV2::new(version, command, outsize, insize);

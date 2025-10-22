@@ -1,7 +1,7 @@
 use easy_ext::ext;
 use plain::{Plain, as_bytes, as_mut_bytes};
 
-use crate::{error::EcCommandError, traits::EcHasCommand, types::EcCommandMeta};
+use crate::{error::EcCommandError, traits::EcHasCommand, types::EcCommandInfo};
 
 /// TODO: specialization on this?
 pub trait EcCommandSizes: EcHasCommand {
@@ -18,7 +18,7 @@ pub impl<T: EcHasCommand> T {
     /// Types SHOULD be `repr(C)` and match what's expected by `command`.
     unsafe fn do_command<I, O: Plain>(
         &self,
-        command: &EcCommandMeta,
+        command: &EcCommandInfo,
         input: &I,
         output: &mut O,
     ) -> Result<usize, EcCommandError> {
