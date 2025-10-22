@@ -7,7 +7,8 @@ use super::CommandT;
 #[repr(u16)]
 #[non_exhaustive]
 pub enum EcKnownCommand {
-    Hello = 0x0001,
+    ProtoVersion,
+    Hello,
     FwChargeLimit = 0x3E03,
 }
 

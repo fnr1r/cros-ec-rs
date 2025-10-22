@@ -11,5 +11,6 @@ macro_rules! cmd {
     };
 }
 
+cmd!(proto_version, 0);
 cmd!(hello, 0);
 cmd!(fw_charge_limit, 0);
