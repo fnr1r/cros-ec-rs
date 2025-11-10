@@ -3,6 +3,12 @@
 version = 4
 
 [[package]]
+name = "anyhow"
+version = "1.0.100"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
+
+[[package]]
 name = "autocfg"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -24,6 +30,7 @@ checksum = "136d3e02915a2cea4d74caa8681e2d44b1c3254bdbf17d11d41d587ff858832c"
 name = "cros-ec"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "constcat",
  "derive-new",
  "easy-ext",
