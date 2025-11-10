@@ -1,7 +1,12 @@
 [package]
 name = "cros-ec"
 version = "0.1.0"
+authors = ["fnrir"]
 edition = "2024"
+rust-version = "1.88"
+description = "ChromeOS EC interface crate"
+readme = "README.md"
+repository = "https://github.com/fnr1r/cros-ec-rs"
 
 [dependencies]
 constcat = "0.6"
