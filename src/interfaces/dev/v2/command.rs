@@ -4,10 +4,11 @@ use derive_new::new;
 use easy_ext::ext;
 use rustix::{
     io::Errno,
-    ioctl::{Ioctl, IoctlOutput, Opcode, ioctl, opcode::read_write},
+    ioctl::{Ioctl, IoctlOutput, Opcode, ioctl},
 };
 use slice_dst::SliceWithHeader;
 
+use super::consts::CROS_EC_DEV_IOCXCMD_V2;
 use crate::{
     error::{EcCommandError, EcError},
     types::EcCommandInfo,
@@ -15,15 +16,9 @@ use crate::{
     utils::slice::slice_copy_min_len,
 };
 
-const CROS_EC_DEV_IOC_V2: u8 = 0xEC;
-pub const CROS_EC_DEV_IOCXCMD_V2: Opcode =
-    read_write::<CrosEcCommandV2Header>(CROS_EC_DEV_IOC_V2, 0);
-//pub const CROS_EC_DEV_IOCRDMEM_V2: Opcode = read_write::<()>(CROS_EC_DEV_IOC_V2, 1);
-//const CROS_EC_DEV_IOCEVENTMASK_V2: u32 = _IO(CROS_EC_DEV_IOC_V2, 2);
-
 #[derive(Debug, new)]
 #[repr(C)]
-struct CrosEcCommandV2Header {
+pub(super) struct CrosEcCommandV2Header {
     // Command version number (often 0)
     version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)

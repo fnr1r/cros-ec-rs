@@ -3,21 +3,19 @@ use std::{ffi::c_void, os::fd::AsFd};
 use derive_new::new;
 use rustix::{
     io::Errno,
-    ioctl::{Ioctl, IoctlOutput, Opcode, ioctl, opcode::read_write},
+    ioctl::{Ioctl, IoctlOutput, Opcode, ioctl},
 };
 
+use super::consts::CROS_EC_DEV_IOCXCMD;
 use crate::{
     error::{EcCommandError, EcError},
     types::{CommandT, EcCommandInfo, VersionT},
     utils::slice::{as_raw_mut_parts, as_raw_parts},
 };
 
-const CROS_EC_DEV_IOC: u8 = b':';
-const CROS_EC_DEV_IOCXCMD: Opcode = read_write::<CrosEcCommand>(CROS_EC_DEV_IOC, 0);
-
 #[derive(Debug, new)]
 #[repr(C)]
-struct CrosEcCommand {
+pub(super) struct CrosEcCommand {
     // Command version number (often 0)
     version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)
