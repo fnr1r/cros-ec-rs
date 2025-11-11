@@ -1,9 +1,4 @@
-use std::{
-    cmp::{max, min},
-    ffi::c_void,
-    iter::repeat_n,
-    os::fd::AsFd,
-};
+use std::{cmp::max, ffi::c_void, iter::repeat_n, os::fd::AsFd};
 
 use derive_new::new;
 use easy_ext::ext;
@@ -17,6 +12,7 @@ use crate::{
     error::{EcCommandError, EcError},
     types::EcCommandInfo,
     types::{CommandT, VersionT},
+    utils::slice::slice_copy_min_len,
 };
 
 const CROS_EC_DEV_IOC_V2: u8 = 0xEC;
@@ -93,14 +89,6 @@ unsafe impl Ioctl for &mut CrosEcCommandV2 {
         }
         Ok(out as Self::Output)
     }
-}
-
-fn slice_copy_min_len<T: Copy>(input: &[T], output: &mut [T]) -> usize {
-    let len = min(input.len(), output.len());
-    let input = &input[..len];
-    let output = &mut output[..len];
-    output.copy_from_slice(input);
-    len
 }
 
 pub unsafe fn ec_command_dev_v2(
