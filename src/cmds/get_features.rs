@@ -1,4 +1,4 @@
-use plain::{Plain, as_mut_bytes};
+use plain::Plain;
 
 pub use super::consts::EC_CMD_GET_FEATURES;
 use super::prelude::*;
@@ -13,7 +13,6 @@ unsafe impl Plain for GetFeaturesResponse {}
 
 pub fn ec_cmd_get_features(iface: &impl EcHasCommand) -> Result<GetFeaturesResponse> {
     let mut buf = GetFeaturesResponse::default();
-    let output = unsafe { as_mut_bytes(&mut buf) };
-    unsafe { iface.ec_command(&EC_CMD_GET_FEATURES, None, Some(output))? };
+    unsafe { iface.ec_command_w(&EC_CMD_GET_FEATURES, &mut buf)? };
     Ok(buf)
 }

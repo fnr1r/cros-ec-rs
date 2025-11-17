@@ -70,7 +70,7 @@ you forgot to set the input, idiot!"#;
 /// Sends a [HELLO](EC_CMD_HELLO) command to the EC and checks the result.
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
     let mut output = HelloT::default();
-    let len = unsafe { iface.do_command(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT, &mut output)? };
+    let len = unsafe { iface.ec_command_rw(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT, &mut output)? };
     #[cfg(debug_assertions)]
     if len != HELLO_T_SIZE {
         panic!("EC sent hello of size {}???", len);
