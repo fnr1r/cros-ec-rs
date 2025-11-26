@@ -86,6 +86,13 @@ unsafe impl Ioctl for &mut CrosEcCommandV2 {
     }
 }
 
+/// Send a command to the EC though the ioctl V2 interface.
+///
+/// Returns the length of output data stored in `output`.
+///
+/// # Safety
+///
+/// This calls abstract EC commands. It *should* be memory safe though.
 pub unsafe fn ec_command_dev_v2(
     fd: impl AsFd,
     command: &EcCommandInfo,
