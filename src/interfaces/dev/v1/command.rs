@@ -1,4 +1,4 @@
-use std::{ffi::c_void, os::fd::AsFd};
+use std::{ffi::c_void, ops::Deref, os::fd::AsFd};
 
 use derive_new::new;
 use rustix::{
@@ -15,25 +15,25 @@ use crate::{
 
 #[derive(Debug, new)]
 #[repr(C)]
-pub(super) struct CrosEcCommand {
+pub struct CrosEcCommandV1 {
     // Command version number (often 0)
-    version: VersionT,
+    pub version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)
-    command: CommandT,
+    pub command: CommandT,
     // Outgoing data to EC
-    outdata: *const u8,
+    pub outdata: *const u8,
     // Outgoing length in bytes
-    outsize: u32,
+    pub outsize: u32,
     // Where to put the incoming data from EC
-    indata: *mut u8,
+    pub indata: *mut u8,
     // On call, how much we can accept. On return, how much we got.
-    insize: u32,
+    pub insize: u32,
     // EC's response to the command (separate from communication failure)
     #[new(value = "0xff")]
-    result: u32,
+    pub result: u32,
 }
 
-impl CrosEcCommand {
+impl CrosEcCommandV1 {
     fn new_sliced(
         command: &EcCommandInfo,
         input: Option<&[u8]>,
@@ -48,13 +48,32 @@ impl CrosEcCommand {
     }
 }
 
-impl CrosEcCommand {
+/// This is here to avoid leaking a Ioctl impl for [CrosEcCommandV1]
+#[derive(Debug)]
+#[repr(transparent)]
+pub struct CrosEcCommandV1Wrap(CrosEcCommandV1);
+
+impl Deref for CrosEcCommandV1Wrap {
+    type Target = CrosEcCommandV1;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
+impl CrosEcCommandV1Wrap {
+    fn new_sliced(
+        command: &EcCommandInfo,
+        input: Option<&[u8]>,
+        output: Option<&mut [u8]>,
+    ) -> Self {
+        Self(CrosEcCommandV1::new_sliced(command, input, output))
+    }
     unsafe fn from_ptr_mut<'a, T>(this: *mut T) -> &'a mut Self {
         unsafe { this.cast::<Self>().as_mut() }.unwrap()
     }
 }
 
-unsafe impl Ioctl for CrosEcCommand {
+unsafe impl Ioctl for CrosEcCommandV1Wrap {
     type Output = (u32, u32);
     const IS_MUTATING: bool = true;
     fn opcode(&self) -> Opcode {
@@ -88,7 +107,7 @@ pub unsafe fn ec_command_dev_v1(
     input: Option<&[u8]>,
     output: Option<&mut [u8]>,
 ) -> Result<usize, EcCommandError> {
-    let cmd = CrosEcCommand::new_sliced(command, input, output);
+    let cmd = CrosEcCommandV1Wrap::new_sliced(command, input, output);
     let (result, len) = unsafe { ioctl(fd, cmd) }?;
     EcError::from_ec_result(result)?;
     Ok(len as usize)

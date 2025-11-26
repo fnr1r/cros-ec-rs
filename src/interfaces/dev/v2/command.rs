@@ -18,18 +18,18 @@ use crate::{
 
 #[derive(Debug, new)]
 #[repr(C)]
-pub(super) struct CrosEcCommandV2Header {
+pub struct CrosEcCommandV2Header {
     // Command version number (often 0)
-    version: VersionT,
+    pub version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)
-    command: CommandT,
+    pub command: CommandT,
     // Outgoing length in bytes
-    outsize: u32,
+    pub outsize: u32,
     // Max number of bytes to accept from EC
-    insize: u32,
+    pub insize: u32,
     // EC's response to the command (separate from communication failure)
     #[new(value = "0xff")]
-    result: u32,
+    pub result: u32,
 }
 
 impl CrosEcCommandV2Header {
