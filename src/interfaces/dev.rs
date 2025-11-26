@@ -21,8 +21,8 @@ use crate::{
 };
 
 mod chk_v1;
-mod v1;
-mod v2;
+pub mod v1;
+pub mod v2;
 mod version;
 
 type Result<T, E = EcDevError> = core::result::Result<T, E>;
@@ -102,8 +102,8 @@ impl<F: AsFd> EcHasCommand for EcDev<F> {
     ) -> Result<usize, EcCommandError> {
         let fd = &self.file;
         let f = match self.version {
-            V1 => v1::ec_command_dev_v1,
-            V2 => v2::ec_command_dev_v2,
+            V1 => v1::command::ec_command_dev_v1,
+            V2 => v2::command::ec_command_dev_v2,
         };
         unsafe { f(fd, command, input, output) }
     }
