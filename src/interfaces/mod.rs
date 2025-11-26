@@ -1,6 +1,4 @@
-pub use self::dev::EcDev;
-
-pub(crate) mod dev;
+pub mod dev;
 
 // This should be bitflags
 /*#[derive(Debug)]
