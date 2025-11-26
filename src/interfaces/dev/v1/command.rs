@@ -1,5 +1,6 @@
-use std::{ffi::c_void, ops::Deref, os::fd::AsFd};
+use std::{ffi::c_void, os::fd::AsFd};
 
+use derive_more::Deref;
 use derive_new::new;
 use rustix::{
     io::Errno,
@@ -49,16 +50,9 @@ impl CrosEcCommandV1 {
 }
 
 /// This is here to avoid leaking a Ioctl impl for [CrosEcCommandV1]
-#[derive(Debug)]
+#[derive(Debug, Deref)]
 #[repr(transparent)]
 pub struct CrosEcCommandV1Wrap(CrosEcCommandV1);
-
-impl Deref for CrosEcCommandV1Wrap {
-    type Target = CrosEcCommandV1;
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
-}
 
 impl CrosEcCommandV1Wrap {
     fn new_sliced(
