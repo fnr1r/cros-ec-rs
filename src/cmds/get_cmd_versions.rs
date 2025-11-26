@@ -1,7 +1,8 @@
 //!
 //! # Errors
 //!
-//! Returns [EcError::InvalidParam] for a bad command
+//! Returns [EcResult::InvalidParam](crate::error::EcResult::InvalidParam) for
+//! a bad command
 pub use super::consts::{EC_CMD_GET_CMD_VERSIONS_V0, EC_CMD_GET_CMD_VERSIONS_V1};
 use super::prelude::*;
 
