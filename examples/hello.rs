@@ -1,7 +1,7 @@
 use anyhow::Result;
 use cros_ec::{
     cmds::{hello::ec_cmd_hello, proto_version::ec_cmd_proto_version},
-    interfaces::EcDev,
+    interfaces::dev::EcDev,
 };
 
 fn main() -> Result<()> {
