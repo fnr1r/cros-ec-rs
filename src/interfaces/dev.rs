@@ -64,10 +64,6 @@ impl<F: AsFd> EcDev<F> {
     pub const fn new_unchecked(file: F, version: EcDevVersion) -> Self {
         Self { file, version }
     }
-    /// Only for internal use, i.e. the v1/v2 check
-    const fn new_v1_unchecked(file: F) -> Self {
-        Self::new_unchecked(file, EcDevVersion::V1)
-    }
     pub fn new(file: F, version: EcDevVersion) -> Result<Self, EcHelloError> {
         let this = Self::new_unchecked(file, version);
         ec_cmd_hello(&this)?;
