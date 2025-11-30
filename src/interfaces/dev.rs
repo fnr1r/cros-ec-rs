@@ -5,6 +5,7 @@ use std::{
     path::Path,
 };
 
+use derive_more::Deref;
 use thiserror::Error;
 
 use self::{
@@ -49,8 +50,9 @@ pub enum EcDevError {
 ///
 /// Handles connections with the Chromium Embedded Controller via the `/dev`
 /// ioctl interface. Supports both V1 and V2.
-#[derive(Debug)]
+#[derive(Debug, Deref)]
 pub struct EcDev<F: AsFd = File> {
+    #[deref]
     file: F,
     version: EcDevVersion,
 }
