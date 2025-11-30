@@ -1,6 +1,6 @@
 use std::os::fd::AsFd;
 
-use super::v1::iface::EcDevV1;
+use super::iface::EcDevV1;
 use crate::cmds::hello::{EcHelloError, ec_cmd_hello};
 
 pub fn ec_dev_is_v1(file: impl AsFd) -> Result<bool, EcHelloError> {

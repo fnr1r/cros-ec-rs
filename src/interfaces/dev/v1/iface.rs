@@ -11,6 +11,7 @@ use crate::{
 };
 
 #[derive(Debug, Deref)]
+#[repr(transparent)]
 pub struct EcDevV1<F: AsFd = File>(F);
 
 impl<F: AsFd> EcDevV1<F> {

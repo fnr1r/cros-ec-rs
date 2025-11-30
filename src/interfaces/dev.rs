@@ -10,7 +10,7 @@ use thiserror::Error;
 
 use self::{
     EcDevVersion::*,
-    chk_v1::ec_dev_is_v1,
+    v1::check::ec_dev_is_v1,
     version::{DevVersionError, ec_dev_read_version_check},
 };
 use crate::{
@@ -21,7 +21,6 @@ use crate::{
     types::EcCommandInfo,
 };
 
-mod chk_v1;
 pub mod v1;
 pub mod v2;
 mod version;
