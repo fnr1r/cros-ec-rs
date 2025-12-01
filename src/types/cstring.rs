@@ -35,8 +35,13 @@ impl<const N: usize> Debug for SizedCString<N> {
     }
 }
 
+impl<const N: usize> SizedCString<N> {
+    // TODO: Move to const-default
+    pub const DEFAULT: Self = Self([0; N]);
+}
+
 impl<const N: usize> Default for SizedCString<N> {
     fn default() -> Self {
-        Self([0; N])
+        Self::DEFAULT
     }
 }

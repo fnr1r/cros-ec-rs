@@ -1,6 +1,4 @@
-use plain::Plain;
-
-use super::{super::prelude::*, EC_CMD_GET_VERSION_V0, EcImageType, EcVersion, VersionStr};
+use super::{EC_CMD_GET_VERSION_V0, prelude::*};
 
 #[derive(Debug, Default)]
 #[repr(C, align(4))]
@@ -25,6 +23,7 @@ impl From<GetVersionResponseV0> for EcVersion {
             version_string_ro,
             version_string_rw,
             current_image: EcImageType::from_repr(current_image).unwrap_or_default(),
+            ..Self::DEFAULT
         }
     }
 }
