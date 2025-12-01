@@ -1,7 +1,12 @@
 use strum::FromRepr;
 
 pub use super::consts::{EC_CMD_GET_VERSION_V0, EC_CMD_GET_VERSION_V1};
-use crate::types::cstring::SizedCString;
+use super::prelude::*;
+use crate::{
+    cmds::get_cmd_versions::ec_cmd_get_cmd_versions_v0,
+    error::{EcError, EcResult},
+    types::{EcKnownCommand, cstring::SizedCString},
+};
 
 mod prelude;
 pub mod v0;
@@ -39,4 +44,18 @@ impl EcVersion {
         cros_fwid_ro: None,
         cros_fwid_rw: None,
     };
+}
+
+const GET_VERSION_UNSUPPORTED_ERROR: EcError =
+    EcError::err_from_ec_result(EcResult::InvalidCommand);
+
+pub fn ec_cmd_get_version(iface: &impl EcHasCommand) -> Result<EcVersion> {
+    let version_mask = ec_cmd_get_cmd_versions_v0(iface, EcKnownCommand::GetVersion as u8)?;
+    let Some(version) = version_mask.max_version() else {
+        return Err(GET_VERSION_UNSUPPORTED_ERROR)?;
+    };
+    Ok(match version {
+        0 => v0::ec_cmd_get_version_v0(iface)?.into(),
+        _ => v1::ec_cmd_get_version_v1(iface)?.into(),
+    })
 }

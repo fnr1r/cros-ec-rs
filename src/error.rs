@@ -54,6 +54,9 @@ impl EcError {
             Ok(())
         }
     }
+    pub(crate) const fn err_from_ec_result(res: EcResult) -> Self {
+        Self(NonZeroU32::new(res as u32).unwrap())
+    }
 }
 
 #[derive(Debug, Error)]

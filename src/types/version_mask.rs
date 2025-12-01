@@ -23,6 +23,9 @@ impl VersionMask {
     const fn unset_bit(&mut self, n: u8) {
         self.0 &= !(1 << n);
     }
+    pub fn max_version(&self) -> Option<u8> {
+        self.into_iter().next_back()
+    }
 }
 
 #[derive(Debug, Clone)]
