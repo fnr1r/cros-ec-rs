@@ -5,6 +5,7 @@ pub use self::{command::EcKnownCommand, command_info::EcCommandInfo};
 mod command;
 mod command_info;
 pub mod features;
+pub mod version_mask;
 
 pub type CommandT = c_int;
 pub type VersionT = c_int;
