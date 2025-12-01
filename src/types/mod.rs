@@ -4,6 +4,7 @@ pub use self::{command::EcKnownCommand, command_info::EcCommandInfo};
 
 mod command;
 mod command_info;
+pub mod cstring;
 pub mod features;
 pub mod version_mask;
 

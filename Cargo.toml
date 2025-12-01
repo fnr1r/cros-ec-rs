@@ -9,6 +9,7 @@ readme = "README.md"
 repository = "https://github.com/fnr1r/cros-ec-rs"
 
 [dependencies]
+bstr = { version = "1.12", default-features = false }
 constcat = "0.6"
 derive-new = "0.7"
 easy-ext = "1"

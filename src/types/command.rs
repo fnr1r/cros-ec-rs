@@ -9,6 +9,7 @@ use super::CommandT;
 pub enum EcKnownCommand {
     ProtoVersion,
     Hello,
+    GetVersion,
     GetCmdVersions = 0x0008,
     GetFeatures = 0x000D,
     FwChargeLimit = 0x3E03,
