@@ -12,6 +12,7 @@ pub enum EcKnownCommand {
     GetVersion,
     GetCmdVersions = 0x0008,
     GetFeatures = 0x000D,
+    FlashInfo = 0x0010,
     FwChargeLimit = 0x3E03,
 }
 

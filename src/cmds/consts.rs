@@ -24,4 +24,5 @@ cmd!(hello, 0);
 cmd!(get_version, 0, 1);
 cmd!(get_cmd_versions, 0, 1);
 cmd!(get_features, 0);
+cmd!(flash_info, 0, 1, 2);
 cmd!(fw_charge_limit, 0);
