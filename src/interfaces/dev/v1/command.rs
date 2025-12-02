@@ -52,7 +52,7 @@ impl CrosEcCommandV1 {
 /// This is here to avoid leaking a Ioctl impl for [CrosEcCommandV1]
 #[derive(Debug, Deref)]
 #[repr(transparent)]
-pub struct CrosEcCommandV1Wrap(CrosEcCommandV1);
+struct CrosEcCommandV1Wrap(CrosEcCommandV1);
 
 impl CrosEcCommandV1Wrap {
     fn new_sliced(
