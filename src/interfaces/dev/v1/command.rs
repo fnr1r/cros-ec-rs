@@ -1,4 +1,4 @@
-use std::{ffi::c_void, os::fd::AsFd};
+use std::{ffi::c_void, marker::PhantomData, os::fd::AsFd};
 
 use derive_more::Deref;
 use derive_new::new;
@@ -52,22 +52,23 @@ impl CrosEcCommandV1 {
 /// This is here to avoid leaking a Ioctl impl for [CrosEcCommandV1]
 #[derive(Debug, Deref)]
 #[repr(transparent)]
-struct CrosEcCommandV1Wrap(CrosEcCommandV1);
+struct CrosEcCommandV1Wrap<'a>(#[deref] CrosEcCommandV1, PhantomData<&'a ()>);
 
-impl CrosEcCommandV1Wrap {
+impl<'a> CrosEcCommandV1Wrap<'a> {
     fn new_sliced(
         command: &EcCommandInfo,
-        input: Option<&[u8]>,
-        output: Option<&mut [u8]>,
+        input: Option<&'a [u8]>,
+        output: Option<&'a mut [u8]>,
     ) -> Self {
-        Self(CrosEcCommandV1::new_sliced(command, input, output))
+        let inner = CrosEcCommandV1::new_sliced(command, input, output);
+        Self(inner, PhantomData)
     }
-    unsafe fn from_ptr_mut<'a, T>(this: *mut T) -> &'a mut Self {
+    unsafe fn from_ptr_mut<T>(this: *mut T) -> &'a mut Self {
         unsafe { this.cast::<Self>().as_mut() }.unwrap()
     }
 }
 
-unsafe impl Ioctl for CrosEcCommandV1Wrap {
+unsafe impl Ioctl for CrosEcCommandV1Wrap<'_> {
     type Output = (u32, u32);
     const IS_MUTATING: bool = true;
     fn opcode(&self) -> Opcode {
