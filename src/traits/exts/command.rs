@@ -1,4 +1,3 @@
-use easy_ext::ext;
 use plain::{Plain, as_bytes, as_mut_bytes};
 
 use crate::{error::EcCommandError, traits::EcHasCommand, types::EcCommandInfo};
@@ -9,8 +8,7 @@ pub trait EcCommandSizes: EcHasCommand {
     const MAX_OUTSIZE: usize;
 }
 
-#[ext(EcCommandExt)]
-pub impl<T: EcHasCommand> T {
+pub trait EcCommandExt: EcHasCommand {
     /// # Safety
     ///
     /// See [EcHasCommand::ec_command]
@@ -70,3 +68,5 @@ pub impl<T: EcHasCommand> T {
         unsafe { self.ec_command_wrap(command, input, output) }
     }
 }
+
+impl<T: EcHasCommand> EcCommandExt for T {}
