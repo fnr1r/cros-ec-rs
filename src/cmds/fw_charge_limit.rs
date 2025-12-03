@@ -80,6 +80,13 @@ impl From<EcFwChargeLimitConfig> for FwEcParamsChargeLimit {
     }
 }
 
+fn ec_cmd_fw_charge_limit_raw(
+    iface: &impl EcHasCommand,
+    params: &FwEcParamsChargeLimit,
+) -> Result<FwEcResponseChargeLimit> {
+    unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_FW_CHARGE_LIMIT, params) }
+}
+
 /// Sends a [FW_CHARGE_LIMIT](EC_CMD_FW_CHARGE_LIMIT) command with the
 /// specified config.
 pub fn ec_cmd_fw_charge_limit(
@@ -87,8 +94,7 @@ pub fn ec_cmd_fw_charge_limit(
     config: EcFwChargeLimitConfig,
 ) -> Result<Option<u16>> {
     let cmd = FwEcParamsChargeLimit::from(config);
-    let buf: FwEcResponseChargeLimit =
-        unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_FW_CHARGE_LIMIT, &cmd) }?;
+    let buf = ec_cmd_fw_charge_limit_raw(iface, &cmd)?;
     Ok(if cmd.flags & FW_CHARGE_LIMIT_QUERY != 0 {
         Some(buf.limit)
     } else {
