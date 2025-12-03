@@ -1,7 +1,4 @@
-pub use self::{
-    command::{EcCommandExt, EcCommandSizes},
-    readmem::EcReadmemExt,
-};
+pub use self::{command::EcCommandExt, readmem::EcReadmemExt};
 
 mod command;
 mod readmem;

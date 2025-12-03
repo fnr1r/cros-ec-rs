@@ -2,12 +2,6 @@ use plain::{Plain, as_bytes, as_mut_bytes};
 
 use crate::{error::EcCommandError, traits::EcHasCommand, types::EcCommandInfo};
 
-/// TODO: specialization on this?
-pub trait EcCommandSizes: EcHasCommand {
-    const MAX_INSIZE: usize;
-    const MAX_OUTSIZE: usize;
-}
-
 pub trait EcCommandExt: EcHasCommand {
     /// # Safety
     ///

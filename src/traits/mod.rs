@@ -1,6 +1,6 @@
 pub use self::{
     base::{EcHasCommand, EcHasPollevent, EcHasReadmem},
-    exts::{EcCommandExt, EcCommandSizes, EcReadmemExt},
+    exts::{EcCommandExt, EcReadmemExt},
 };
 
 mod base;
