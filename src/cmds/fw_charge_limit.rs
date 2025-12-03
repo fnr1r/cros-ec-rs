@@ -10,18 +10,25 @@ pub const FW_CHARGE_LIMIT_OVERRIDE: u8 = 1 << 7;
 
 #[derive(Debug, Default)]
 #[repr(C, packed)]
-struct FwEcParamsChargeLimit {
+pub struct EcFwChargeLimitParams {
     flags: u8,
     limit: u16,
 }
 
 #[derive(Debug, Default)]
 #[repr(C, packed)]
-struct FwEcResponseChargeLimit {
+pub struct EcFwChargeLimitResponse {
     limit: u16,
 }
 
-unsafe impl Plain for FwEcResponseChargeLimit {}
+unsafe impl Plain for EcFwChargeLimitResponse {}
+
+pub fn ec_cmd_fw_charge_limit_raw(
+    iface: &impl EcHasCommand,
+    params: &EcFwChargeLimitParams,
+) -> Result<EcFwChargeLimitResponse> {
+    unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_FW_CHARGE_LIMIT, params) }
+}
 
 #[derive(Debug, Default)]
 pub struct EcFwChargeLimitConfig {
@@ -52,7 +59,7 @@ impl EcFwChargeLimitConfig {
     }
 }
 
-impl From<EcFwChargeLimitConfig> for FwEcParamsChargeLimit {
+impl From<EcFwChargeLimitConfig> for EcFwChargeLimitParams {
     fn from(value: EcFwChargeLimitConfig) -> Self {
         let mut this = Self::default();
 
@@ -80,20 +87,13 @@ impl From<EcFwChargeLimitConfig> for FwEcParamsChargeLimit {
     }
 }
 
-fn ec_cmd_fw_charge_limit_raw(
-    iface: &impl EcHasCommand,
-    params: &FwEcParamsChargeLimit,
-) -> Result<FwEcResponseChargeLimit> {
-    unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_FW_CHARGE_LIMIT, params) }
-}
-
 /// Sends a [FW_CHARGE_LIMIT](EC_CMD_FW_CHARGE_LIMIT) command with the
 /// specified config.
 pub fn ec_cmd_fw_charge_limit(
     iface: &impl EcHasCommand,
     config: EcFwChargeLimitConfig,
 ) -> Result<Option<u16>> {
-    let cmd = FwEcParamsChargeLimit::from(config);
+    let cmd = EcFwChargeLimitParams::from(config);
     let buf = ec_cmd_fw_charge_limit_raw(iface, &cmd)?;
     Ok(if cmd.flags & FW_CHARGE_LIMIT_QUERY != 0 {
         Some(buf.limit)
