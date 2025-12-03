@@ -78,10 +78,5 @@ pub fn ec_cmd_fw_charge_limit_config(
     iface: &impl EcHasCommand,
     config: EcFwChargeLimitConfig,
 ) -> Result<Option<u16>> {
-    let buf = ec_cmd_fw_charge_limit(iface, &config.as_params())?;
-    Ok(if config.do_query {
-        Some(buf.limit)
-    } else {
-        None
-    })
+    Ok(ec_cmd_fw_charge_limit(iface, &config.as_params())?.map(|e| e.limit))
 }

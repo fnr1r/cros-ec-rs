@@ -1,21 +1,18 @@
 use plain::{Plain, as_bytes, as_mut_bytes};
 
 use super::super::EcHasCommand;
-use crate::error::{EcError, EcResult};
+use crate::utils::invalid_response::INVALID_RESPONSE_ERR;
 
 type Error = crate::error::EcCommandError;
 type Info = crate::types::EcCommandInfo;
 type Result<T, E = Error> = core::result::Result<T, E>;
-
-const INVALID_RESPONSE_ERR: EcError = EcError::err_from_ec_result(EcResult::InvalidResponse);
-const INVALID_RESPONSE_CERR: Error = Error::EcError(INVALID_RESPONSE_ERR);
 
 #[inline]
 fn output_length_check<T>(len: usize) -> Result<()> {
     if len == size_of::<T>() {
         return Ok(());
     }
-    Err(INVALID_RESPONSE_CERR)
+    Err(INVALID_RESPONSE_ERR)
 }
 
 /// An extension trait for [`EcHasCommand`] that provides wrapper methods for
