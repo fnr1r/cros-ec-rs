@@ -49,9 +49,9 @@ impl CrosEcCommandV2Inner {
 }
 
 /// blame
-/// https://gitlab.howett.net/DHowett/ectool/-/blob/main/src/cros_ec_dev.h#L65
+/// <https://gitlab.howett.net/DHowett/ectool/-/blob/main/src/cros_ec_dev.h#L65>
 /// and
-/// https://gitlab.howett.net/DHowett/ectool/-/blob/main/src/comm-dev.cc#L137
+/// <https://gitlab.howett.net/DHowett/ectool/-/blob/main/src/comm-dev.cc#L137>
 /// for this design
 #[derive(Debug)]
 #[repr(C)]
