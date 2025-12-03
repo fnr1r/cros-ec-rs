@@ -12,8 +12,6 @@ pub const EC_CMD_HELLO_INPUT: HelloT = 0xa0b0c0d0;
 pub const EC_CMD_HELLO_RESP: HelloT = 0x01020304;
 pub const EC_CMD_HELLO_OUTPUT: HelloT = EC_CMD_HELLO_INPUT | EC_CMD_HELLO_RESP;
 
-const HELLO_T_SIZE: usize = size_of::<HelloT>();
-
 #[ext]
 impl Errno {
     fn ok_if_enotty(self) -> Result<(), Errno> {
@@ -69,14 +67,7 @@ you forgot to set the input, idiot!"#;
 
 /// Sends a [HELLO](EC_CMD_HELLO) command to the EC and checks the result.
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
-    let mut output = HelloT::default();
-    let len = unsafe { iface.ec_command_rw(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT, &mut output)? };
-    #[cfg(debug_assertions)]
-    if len != HELLO_T_SIZE {
-        panic!("EC sent hello of size {}???", len);
-    }
-    #[cfg(not(debug_assertions))]
-    let _ = len;
+    let output = unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT) }?;
     if output != EC_CMD_HELLO_OUTPUT {
         #[cfg(debug_assertions)]
         if output == EC_CMD_HELLO_RESP {

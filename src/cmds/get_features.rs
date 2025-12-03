@@ -12,7 +12,5 @@ pub struct GetFeaturesResponse {
 unsafe impl Plain for GetFeaturesResponse {}
 
 pub fn ec_cmd_get_features(iface: &impl EcHasCommand) -> Result<GetFeaturesResponse> {
-    let mut buf = GetFeaturesResponse::default();
-    unsafe { iface.ec_command_w(&EC_CMD_GET_FEATURES, &mut buf)? };
-    Ok(buf)
+    unsafe { iface.ec_cmd_ext_wad(&EC_CMD_GET_FEATURES) }
 }

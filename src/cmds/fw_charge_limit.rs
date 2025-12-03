@@ -87,8 +87,8 @@ pub fn ec_cmd_fw_charge_limit(
     config: EcFwChargeLimitConfig,
 ) -> Result<Option<u16>> {
     let cmd = FwEcParamsChargeLimit::from(config);
-    let mut buf = FwEcResponseChargeLimit::default();
-    unsafe { iface.ec_command_rw(&EC_CMD_FW_CHARGE_LIMIT, &cmd, &mut buf)? };
+    let buf: FwEcResponseChargeLimit =
+        unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_FW_CHARGE_LIMIT, &cmd) }?;
     Ok(if cmd.flags & FW_CHARGE_LIMIT_QUERY != 0 {
         Some(buf.limit)
     } else {

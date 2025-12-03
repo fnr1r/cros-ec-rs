@@ -29,7 +29,5 @@ impl From<GetVersionResponseV0> for EcVersion {
 }
 
 pub fn ec_cmd_get_version_v0(iface: &impl EcHasCommand) -> Result<GetVersionResponseV0> {
-    let mut res = GetVersionResponseV0::default();
-    unsafe { iface.ec_command_w(&EC_CMD_GET_VERSION_V0, &mut res)? };
-    Ok(res)
+    unsafe { iface.ec_cmd_ext_wad(&EC_CMD_GET_VERSION_V0) }
 }
