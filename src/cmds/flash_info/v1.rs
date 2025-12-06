@@ -10,7 +10,7 @@ pub struct FlashInfoV1 {
     /// For example, an EC may have a write buffer which can do half-page
     /// operations if data is aligned, and a slower word-at-a-time write mode.
     pub write_ideal_size: u32,
-    /// Flags; see `EC_FLASH_INFO_*`
+    /// Flags; see [`EcFlashInfoFlags`](super::flags::EcFlashInfoFlags)
     pub flags: u32,
 }
 
