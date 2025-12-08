@@ -1,4 +1,5 @@
-use std::{cmp::max, ffi::c_void, iter::repeat_n, os::fd::AsFd};
+use core::{cmp::max, ffi::c_void, iter::repeat_n};
+use std::os::fd::AsFd;
 
 use derive_new::new;
 use easy_ext::ext;

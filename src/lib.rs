@@ -2,6 +2,7 @@
 //!
 //! NOTE: This crate only aims to support the Framework laptop. Sorry.
 #![deny(unsafe_op_in_unsafe_fn)]
+#![warn(clippy::std_instead_of_core)]
 
 pub mod cmds;
 pub mod consts;

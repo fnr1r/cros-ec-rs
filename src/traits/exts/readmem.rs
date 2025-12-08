@@ -1,4 +1,4 @@
-use std::mem::MaybeUninit;
+use core::mem::MaybeUninit;
 
 use easy_ext::ext;
 use plain::Plain;
@@ -10,7 +10,7 @@ impl<T: Plain> MaybeUninit<T> {
     /// Returns an uninitialized mutable slice of memory for manual init
     /// `T` is assumed to be sized.
     fn uninit_slice_mut(&mut self) -> &mut [u8] {
-        use std::slice::from_raw_parts_mut;
+        use core::slice::from_raw_parts_mut;
         let data = self.as_mut_ptr();
         let len = size_of::<T>();
         unsafe { from_raw_parts_mut(data as *mut _, len) }

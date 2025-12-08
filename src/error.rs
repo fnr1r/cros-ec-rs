@@ -1,4 +1,5 @@
-use std::{borrow::Cow, io::Error as IoError, num::NonZeroU32};
+use core::num::NonZeroU32;
+use std::{borrow::Cow, io::Error as IoError};
 
 use rustix::io::Errno;
 use strum::{FromRepr, IntoStaticStr};

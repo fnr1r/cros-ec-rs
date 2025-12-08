@@ -1,4 +1,4 @@
-use std::iter::FusedIterator;
+use core::iter::FusedIterator;
 
 use derive_more::Deref;
 use plain::Plain;

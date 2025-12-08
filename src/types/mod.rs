@@ -1,4 +1,4 @@
-use std::ffi::{c_int, c_ulong};
+use core::ffi::{c_int, c_ulong};
 
 pub use self::{command::EcKnownCommand, command_info::EcCommandInfo};
 

@@ -1,6 +1,6 @@
-use std::{
+use core::{
     ffi::CStr,
-    fmt::{Debug, Formatter},
+    fmt::{Debug, Formatter, Result as FmtResult},
 };
 
 use bstr::ByteSlice;
@@ -26,7 +26,7 @@ impl<const N: usize> SizedCString<N> {
 unsafe impl<const N: usize> Plain for SizedCString<N> {}
 
 impl<const N: usize> Debug for SizedCString<N> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         if let Some(s) = self.as_cstr() {
             Debug::fmt(s, f)
         } else {

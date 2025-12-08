@@ -1,4 +1,4 @@
-use std::cmp::min;
+use core::cmp::min;
 
 pub fn as_raw_parts<T>(s: &[T]) -> (*const T, usize) {
     (s.as_ptr(), s.len())

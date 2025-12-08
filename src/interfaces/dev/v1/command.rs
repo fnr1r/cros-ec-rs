@@ -1,4 +1,5 @@
-use std::{ffi::c_void, marker::PhantomData, os::fd::AsFd};
+use core::{ffi::c_void, marker::PhantomData};
+use std::os::fd::AsFd;
 
 use derive_more::Deref;
 use derive_new::new;
