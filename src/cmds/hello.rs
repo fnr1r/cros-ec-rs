@@ -62,7 +62,6 @@ impl EcHelloError {
     }
 }
 
-#[cfg(debug_assertions)]
 const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = concat!(
     "your abstraction is ass! session terminated!\n",
     "you forgot to set the input, idiot!",
