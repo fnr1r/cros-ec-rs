@@ -67,7 +67,9 @@ impl FlashInfoV2Header {
     }
     /// # Safety
     ///
-    /// See [SliceLength]
+    /// Modifying `num_banks_desc` without reallocating the owning
+    /// [`FlashInfoV2`] (return type of [`ec_cmd_flash_info_v2`]) may lead to a
+    /// segmentation fault.
     pub const unsafe fn num_banks_desc_mut(&mut self) -> &mut u16 {
         &mut self.num_banks_desc
     }
@@ -91,7 +93,7 @@ pub struct EcFlashBank {
 
 unsafe impl Plain for EcFlashBank {}
 
-type FlashInfoV2 = SliceWithHeader<FlashInfoV2Header, EcFlashBank>;
+pub type FlashInfoV2 = SliceWithHeader<FlashInfoV2Header, EcFlashBank>;
 
 fn new_flash_info_v2_with_len(len: usize) -> Box<FlashInfoV2> {
     let header = FlashInfoV2Header::with_len(len);
