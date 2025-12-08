@@ -11,8 +11,7 @@ use slice_dst::SliceWithHeader;
 use super::consts::CROS_EC_DEV_IOCXCMD_V2;
 use crate::{
     error::{EcCommandError, EcError},
-    types::EcCommandInfo,
-    types::{CommandT, VersionT},
+    types::{CommandT, EcCommandInfo, VersionT},
     utils::slice::slice_copy_min_len,
 };
 
