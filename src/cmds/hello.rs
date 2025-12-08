@@ -1,3 +1,4 @@
+use constcat::concat;
 use easy_ext::ext;
 use libc::ENOTTY;
 use rustix::io::Errno;
@@ -62,17 +63,21 @@ impl EcHelloError {
 }
 
 #[cfg(debug_assertions)]
-const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = r#"your abstraction is ass! session terminated!
-you forgot to set the input, idiot!"#;
+const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = concat!(
+    "your abstraction is ass! session terminated!\n",
+    "you forgot to set the input, idiot!",
+);
 
 /// Sends a [`HELLO`](EC_CMD_HELLO) command to the EC and checks the result.
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
     let output = unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT) }?;
     if output != EC_CMD_HELLO_OUTPUT {
-        #[cfg(debug_assertions)]
-        if output == EC_CMD_HELLO_RESP {
-            panic!("{}", PROGRAMMER_IS_AN_IDIOT_ERROR);
-        }
+        debug_assert_eq!(
+            output,
+            EC_CMD_HELLO_RESP,
+            "{}",
+            PROGRAMMER_IS_AN_IDIOT_ERROR
+        );
         Err(EcHelloMagicError { magic: output })?;
     }
     Ok(())
