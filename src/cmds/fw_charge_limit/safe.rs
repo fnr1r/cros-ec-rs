@@ -72,8 +72,8 @@ impl EcFwChargeLimitConfig {
     }
 }
 
-/// Sends a [FW_CHARGE_LIMIT](EC_CMD_FW_CHARGE_LIMIT) command with the
-/// specified config.
+/// Sends a [`FW_CHARGE_LIMIT`](super::EC_CMD_FW_CHARGE_LIMIT) command with
+/// the specified config.
 pub fn ec_cmd_fw_charge_limit_config(
     iface: &impl EcHasCommand,
     config: EcFwChargeLimitConfig,

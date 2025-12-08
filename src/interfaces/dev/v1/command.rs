@@ -49,7 +49,7 @@ impl CrosEcCommandV1 {
     }
 }
 
-/// This is here to avoid leaking a Ioctl impl for [CrosEcCommandV1]
+/// This is here to avoid leaking a Ioctl impl for [`CrosEcCommandV1`]
 #[derive(Debug, Deref)]
 #[repr(transparent)]
 struct CrosEcCommandV1Wrap<'a>(#[deref] CrosEcCommandV1, PhantomData<&'a ()>);

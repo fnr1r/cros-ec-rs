@@ -65,7 +65,7 @@ impl EcHelloError {
 const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = r#"your abstraction is ass! session terminated!
 you forgot to set the input, idiot!"#;
 
-/// Sends a [HELLO](EC_CMD_HELLO) command to the EC and checks the result.
+/// Sends a [`HELLO`](EC_CMD_HELLO) command to the EC and checks the result.
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
     let output = unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT) }?;
     if output != EC_CMD_HELLO_OUTPUT {
