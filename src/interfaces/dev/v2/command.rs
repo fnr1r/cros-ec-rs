@@ -7,7 +7,7 @@ use rustix::{
     io::Errno,
     ioctl::{Ioctl, IoctlOutput, Opcode, ioctl},
 };
-use slice_dst::SliceWithHeader;
+use unslice_dst::SliceWithHeader;
 
 use super::consts::CROS_EC_DEV_IOCXCMD_V2;
 use crate::{
@@ -43,8 +43,8 @@ type CrosEcCommandV2Inner = SliceWithHeader<CrosEcCommandV2Header, u8>;
 #[ext]
 impl CrosEcCommandV2Inner {
     type Header = CrosEcCommandV2Header;
-    fn header_as_ptr_mut(&mut self) -> *mut Self::Header {
-        &raw mut self.header
+    fn header_as_ptr_mut(&mut self) -> *mut Self {
+        self as _
     }
 }
 
@@ -61,7 +61,7 @@ impl CrosEcCommandV2 {
     fn new(version: VersionT, command: CommandT, outsize: u32, insize: u32) -> Self {
         let header = CrosEcCommandV2Header::new(version, command, outsize, insize);
         let data_len = header.data_len();
-        let this = SliceWithHeader::new(header, repeat_n(0, data_len));
+        let this = SliceWithHeader::from_iter(header, repeat_n(0, data_len));
         Self(this)
     }
 }
