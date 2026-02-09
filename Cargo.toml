@@ -27,7 +27,7 @@ features = ["deref"]
 
 [dependencies.unslice-dst]
 git = "https://github.com/fnr1r/unslice-dst.git"
-rev = "v0.1.2_cros-ec"
+rev = "v0.1.3_cros-ec"
 
 [dev-dependencies]
 anyhow = "1"
