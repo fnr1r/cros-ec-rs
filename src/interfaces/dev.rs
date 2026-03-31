@@ -57,7 +57,7 @@ pub struct EcDev<F: AsFd = File> {
 }
 
 impl<F: AsFd> EcDev<F> {
-    /// Creates an [EcDev] without sending a [hello](ec_cmd_hello) command
+    /// Creates an [`EcDev`] without sending a [`hello`](ec_cmd_hello) command
     ///
     /// Not marked as `unsafe` since any interface should error
     pub const fn new_unchecked(file: F, version: EcDevVersion) -> Self {
@@ -84,7 +84,7 @@ impl EcDev {
     pub fn open_by_name(name: impl AsRef<str>) -> Result<Self> {
         Self::open(Path::new("/dev").join(name.as_ref()))
     }
-    /// Creates a [EcDev] from [CROS_EC_DEV_PATH]
+    /// Creates a [`EcDev`] from [`CROS_EC_DEV_PATH`]
     pub fn open_cros_ec() -> Result<Self> {
         Self::open(CROS_EC_DEV_PATH)
     }

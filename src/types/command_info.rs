@@ -2,7 +2,7 @@ use super::{CommandT, EcKnownCommand, VersionT};
 
 /// Embedded Controller Command info
 ///
-/// Comntains the command number, version and name
+/// Contains the command number, version and name
 #[derive(Debug, Clone)]
 pub struct EcCommandInfo {
     pub command: CommandT,
