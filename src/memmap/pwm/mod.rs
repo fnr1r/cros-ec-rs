@@ -2,6 +2,7 @@
 //!
 //! Expect only fan control here
 
+use arbitrary_int::u2;
 use enumflags2::BitFlags;
 use nonmax::NonMaxU16;
 use rustix::io::Errno;
@@ -36,11 +37,11 @@ pub const EC_FAN_SPEED_NOT_PRESENT: u16 = 0xffff;
 pub const EC_FAN_SPEED_STALLED: u16 = 0xfffe;
 
 /// NOTE: The value range is `0..=3`
-type FanIdx = u8;
+pub type FanIdx = u2;
 
 #[inline]
 pub const fn get_fan_offset(idx: FanIdx) -> u16 {
-    EC_MEMMAP_FAN + 2 * idx as u16
+    EC_MEMMAP_FAN + 2 * idx.value() as u16
 }
 
 impl<T: EcHasReadmem> ProxyFanRpm<T> {
@@ -56,7 +57,7 @@ impl<T: EcHasReadmem> ProxyFanRpm<T> {
 
 #[inline]
 pub fn iter_fans() -> impl Iterator<Item = FanIdx> {
-    0..EC_FAN_SPEED_ENTRIES
+    (0..EC_FAN_SPEED_ENTRIES).map(|e| unsafe { u2::new_unchecked(e) })
 }
 
 #[inline]
