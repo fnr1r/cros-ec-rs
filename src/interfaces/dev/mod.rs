@@ -3,7 +3,7 @@ pub use self::{
     error::EcDevError,
     iface::EcDev,
     v1::{IfaceV1, ec_dev_v1_command},
-    v2::{IfaceV2, ec_dev_v2_command},
+    v2::{IfaceV2, ec_dev_v2_command, ec_dev_v2_readmem},
 };
 
 pub mod dynamic;
