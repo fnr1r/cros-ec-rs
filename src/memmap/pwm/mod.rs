@@ -57,8 +57,13 @@ pub fn get_fan_rpm(
 }
 
 #[inline]
+pub fn iter_fans() -> impl Iterator<Item = FanIdx> {
+    0..EC_FAN_SPEED_ENTRIES
+}
+
+#[inline]
 pub fn get_num_fans(iface: &ProxyFanRpm<impl EcHasReadmem>) -> Result<u8> {
-    (0..EC_FAN_SPEED_ENTRIES)
+    iter_fans()
         .map_while(|e| get_fan_rpm(iface, e).transpose())
         .try_fold(0, |count, speed| {
             speed?;
