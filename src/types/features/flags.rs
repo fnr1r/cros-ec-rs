@@ -8,8 +8,8 @@ pub enum EcFeature {
     ///
     /// Another image in RW partition may support more features.
     Limited = 1 << 0,
-    /// Commands for probing/reading/writing/erasing the flash in the EC
-    /// are present.
+    /// Commands for probing/reading/writing/erasing the flash in the EC are
+    /// present.
     Flash = 1 << 1,
     /// Can control the fan speed directly.
     PwmFan = 1 << 2,
@@ -21,8 +21,8 @@ pub enum EcFeature {
     Led = 1 << 5,
     /// Exposes an interface to control gyro and sensors.
     ///
-    /// The host goes through the EC to access these sensors.
-    /// In addition, the EC may provide composite sensors, like lid angle.
+    /// The host goes through the EC to access these sensors. In addition, the
+    /// EC may provide composite sensors, like lid angle.
     MotionSense = 1 << 6,
     /// The keyboard is controlled by the EC
     Keyb = 1 << 7,
@@ -88,14 +88,14 @@ pub enum EcFeature {
     Cec = 1 << 35,
     /// EC supports tight sensor timestamping.
     MotionSenseTightTimestamps = 1 << 36,
-    /// EC supports tablet mode detection aligned to Chrome and allows
-    /// setting of threshold by host command using
+    /// EC supports tablet mode detection aligned to Chrome and allows setting
+    /// of threshold by host command using
     /// MOTIONSENSE_CMD_TABLET_MODE_LID_ANGLE.
     RefinedTabletModeHysteresis = 1 << 37,
     /// Early Firmware Selection ver.2. Enabled by CONFIG_VBOOT_EFS2.
     ///
-    /// Note this is a RO feature. So, a query (EC_CMD_GET_FEATURES) should
-    /// be sent to RO to be precise.
+    /// Note this is a RO feature. So, a query (EC_CMD_GET_FEATURES) should be
+    /// sent to RO to be precise.
     Efs2 = 1 << 38,
     /// The MCU is a System Companion Processor (SCP).
     Scp = 1 << 39,
@@ -106,8 +106,7 @@ pub enum EcFeature {
     /// The EC will wait for direction from the AP to enter Type-C alternate
     /// modes or USB4.
     TypeCRequireApModeEntry = 1 << 42,
-    /// The EC will wait for an acknowledge from the AP after setting the
-    /// mux.
+    /// The EC will wait for an acknowledge from the AP after setting the mux.
     TypeCMuxRequireApAck = 1 << 43,
     /// The EC supports entering and residing in S4.
     S4Residency = 1 << 44,

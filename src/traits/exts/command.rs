@@ -18,8 +18,9 @@ fn output_length_check<T>(len: usize) -> Result<()> {
 /// An extension trait for [`EcHasCommand`] that provides wrapper methods for
 /// sending EC commands.
 ///
-/// This trait simplifies sending commands by handling the `unsafe` casting of data
-/// structures to and from the raw byte slices required for EC communication.
+/// This trait simplifies sending commands by handling the `unsafe` casting of
+/// data structures to and from the raw byte slices required for EC
+/// communication.
 ///
 /// ## Method Naming Convention
 ///
@@ -46,8 +47,9 @@ fn output_length_check<T>(len: usize) -> Result<()> {
 /// Failure to meet these requirements can lead to memory corruption, incorrect
 /// behavior, or other undefined behavior.
 pub trait EcCommandExt: EcHasCommand {
-    /// A low-level wrapper for `ec_command` that automatically wraps byte slices
-    /// in `Option`. This is the foundation for other methods in this trait.
+    /// A low-level wrapper for `ec_command` that automatically wraps byte
+    /// slices in `Option`. This is the foundation for other methods in this
+    /// trait.
     ///
     /// # Safety
     ///
@@ -65,9 +67,9 @@ pub trait EcCommandExt: EcHasCommand {
     ///
     /// # Safety
     ///
-    /// The input type `I` must have a predictable memory layout and match the EC
-    /// command's expectation. See the trait-level safety documentation for more
-    /// information.
+    /// The input type `I` must have a predictable memory layout and match the
+    /// EC command's expectation. See the trait-level safety documentation for
+    /// more information.
     #[inline]
     unsafe fn ec_cmd_ext_r<I>(&self, command: &Info, input: &I) -> Result<usize> {
         // SAFETY: types are repr(C) and match what's expected
@@ -76,14 +78,14 @@ pub trait EcCommandExt: EcHasCommand {
     }
     /// Sends a command with no input but receives output. (A "getter").
     ///
-    /// **Note:** This method does not verify the returned data size. For a safer
-    /// alternative, see [`EcCommandExt::ec_cmd_ext_wa`].
+    /// **Note:** This method does not verify the returned data size. For a
+    /// safer alternative, see [`EcCommandExt::ec_cmd_ext_wa`].
     ///
     /// # Safety
     ///
-    /// The output type `O` must have a predictable memory layout and match the EC
-    /// command's expectation. The caller must also check the returned `usize`.
-    /// See the trait-level safety documentation for more information.
+    /// The output type `O` must have a predictable memory layout and match the
+    /// EC command's expectation. The caller must also check the returned
+    /// `usize`. See the trait-level safety documentation for more information.
     #[inline]
     unsafe fn ec_cmd_ext_w<O: Plain>(&self, command: &Info, output: &mut O) -> Result<usize> {
         // SAFETY: types are repr(C) and match what's expected
@@ -92,8 +94,8 @@ pub trait EcCommandExt: EcHasCommand {
     }
     /// Sends a command with both input and output data.
     ///
-    /// **Note:** This method does not verify the returned data size. For a safer
-    /// alternative, see [`EcCommandExt::ec_cmd_ext_rwa`].
+    /// **Note:** This method does not verify the returned data size. For a
+    /// safer alternative, see [`EcCommandExt::ec_cmd_ext_rwa`].
     ///
     /// # Safety
     ///
@@ -113,20 +115,20 @@ pub trait EcCommandExt: EcHasCommand {
         let output = unsafe { as_mut_bytes(output) };
         unsafe { self.ec_cmd_wrap_into(command, input, output) }
     }
-    /// Sends a command with no input, receives output, and verifies the output size.
-    /// This is a safer version of [`EcCommandExt::ec_cmd_ext_w`].
+    /// Sends a command with no input, receives output, and verifies the output
+    /// size. This is a safer version of [`EcCommandExt::ec_cmd_ext_w`].
     ///
     /// # Safety
     ///
-    /// The output type `O` must have a predictable memory layout and match the EC
-    /// command's expectation. See the trait-level safety documentation for more
-    /// information.
+    /// The output type `O` must have a predictable memory layout and match the
+    /// EC command's expectation. See the trait-level safety documentation for
+    /// more information.
     #[inline]
     unsafe fn ec_cmd_ext_wa<O: Plain>(&self, command: &Info, output: &mut O) -> Result<()> {
         unsafe { self.ec_cmd_ext_w(command, output) }.and_then(output_length_check::<O>)
     }
-    /// Sends a command with input, receives output, and verifies the output size.
-    /// This is a safer version of [`EcCommandExt::ec_cmd_ext_rw`].
+    /// Sends a command with input, receives output, and verifies the output
+    /// size. This is a safer version of [`EcCommandExt::ec_cmd_ext_rw`].
     ///
     /// # Safety
     ///
@@ -142,14 +144,15 @@ pub trait EcCommandExt: EcHasCommand {
     ) -> Result<()> {
         unsafe { self.ec_cmd_ext_rw(command, input, output) }.and_then(output_length_check::<O>)
     }
-    /// Sends a command with no input, receives output into a default-initialized
-    /// struct, and verifies the output size. The safest "getter" method.
+    /// Sends a command with no input, receives output into a
+    /// default-initialized struct, and verifies the output size. The safest
+    /// "getter" method.
     ///
     /// # Safety
     ///
-    /// The output type `O` must have a predictable memory layout and match the EC
-    /// command's expectation. See the trait-level safety documentation for more
-    /// information.
+    /// The output type `O` must have a predictable memory layout and match the
+    /// EC command's expectation. See the trait-level safety documentation for
+    /// more information.
     #[inline]
     unsafe fn ec_cmd_ext_wad<O: Default + Plain>(&self, command: &Info) -> Result<O> {
         let mut res = O::default();

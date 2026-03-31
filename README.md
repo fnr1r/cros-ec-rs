@@ -1,15 +1,15 @@
 # cros-ec-rs
 
-Rust crate for interfacing with the ChromeOS Embedded Controller (EC),
-primarily targeting the Framework Laptop.
+Rust crate for interfacing with the ChromeOS Embedded Controller (EC), primarily
+targeting the Framework Laptop.
 
 NOTE: This crate remains unversioned until I decide it has developed enough.
 
 ## Focus
 
-Make a safe wrapper for the EC, roughly functionally equivalent to `ectool` as
-a crate. I'll be focusing on the DEV V2 implementation, since it's what
-Framework uses (and I can't check it with anything else).
+Make a safe wrapper for the EC, roughly functionally equivalent to `ectool` as a
+crate. I'll be focusing on the DEV V2 implementation, since it's what Framework
+uses (and I can't check it with anything else).
 
 ## Usage
 
