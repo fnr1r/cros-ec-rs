@@ -33,7 +33,7 @@ impl Default for FlashInfoV2Params {
 pub struct FlashInfoV2Header {
     /// Total flash in the EC
     pub flash_size: u32,
-    /// Flags; see EC_FLASH_INFO_*
+    /// Flags; see [`EcFlashInfoFlags`](super::flags::EcFlashInfoFlags)
     pub flags: u32,
     /// Maximum size to use to send data to write to the EC
     pub write_ideal_size: u32,
