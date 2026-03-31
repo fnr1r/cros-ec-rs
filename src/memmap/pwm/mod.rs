@@ -43,17 +43,15 @@ pub const fn get_fan_offset(idx: FanIdx) -> u16 {
     EC_MEMMAP_FAN + 2 * idx as u16
 }
 
-#[inline]
-pub fn get_fan_rpm_unchecked(iface: &ProxyFanRpm<impl EcHasReadmem>, idx: FanIdx) -> Result<u16> {
-    iface.ec_read_u16(get_fan_offset(idx) as _)
-}
-
-#[inline]
-pub fn get_fan_rpm(
-    iface: &ProxyFanRpm<impl EcHasReadmem>,
-    idx: FanIdx,
-) -> Result<Option<NonMaxU16>> {
-    get_fan_rpm_unchecked(iface, idx).map(NonMaxU16::new)
+impl<T: EcHasReadmem> ProxyFanRpm<T> {
+    #[inline]
+    pub fn get_fan_rpm_unchecked(&self, idx: FanIdx) -> Result<u16> {
+        self.ec_read_u16(get_fan_offset(idx) as _)
+    }
+    #[inline]
+    pub fn get_fan_rpm(&self, idx: FanIdx) -> Result<Option<NonMaxU16>> {
+        self.get_fan_rpm_unchecked(idx).map(NonMaxU16::new)
+    }
 }
 
 #[inline]
@@ -63,7 +61,7 @@ pub fn iter_fans() -> impl Iterator<Item = FanIdx> {
 
 #[inline]
 pub fn get_num_fans(iface: &ProxyFanRpm<impl EcHasReadmem>) -> Result<u8> {
-    let read_speed = |idx| get_fan_rpm(iface, idx).transpose();
+    let read_speed = |idx| iface.get_fan_rpm(idx).transpose();
     let resum = |count, speed: Result<_, _>| speed.map(|_| count + 1);
     iter_fans().map_while(read_speed).try_fold(0, resum)
 }
