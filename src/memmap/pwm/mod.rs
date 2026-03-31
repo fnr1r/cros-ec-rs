@@ -1,6 +1,10 @@
 //! PWM module
 //!
 //! Expect only fan control here
+//!
+//! # TODO
+//!
+//! - consider using `constrained_int` for fan rpm results
 
 use arbitrary_int::u2;
 use enumflags2::BitFlags;
