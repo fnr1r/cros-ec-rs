@@ -2,8 +2,11 @@ use core::mem::MaybeUninit;
 
 use easy_ext::ext;
 use plain::Plain;
+use rustix::io::Errno;
 
 use crate::traits::EcHasReadmem;
+
+type Result<T, E = Errno> = core::result::Result<T, E>;
 
 #[ext(MaybeUninitPlainExt)]
 impl<T: Plain> MaybeUninit<T> {
@@ -17,7 +20,7 @@ impl<T: Plain> MaybeUninit<T> {
     }
 }
 
-fn ec_read_any<T, U>(this: &T, offset: i32) -> Result<U, T::Error>
+fn ec_read_any<T, U>(this: &T, offset: i32) -> Result<U>
 where
     T: ?Sized + EcHasReadmem,
     U: Plain,
@@ -33,13 +36,13 @@ where
 }
 
 pub trait EcReadmemExt: EcHasReadmem {
-    fn ec_read_u8(&self, offset: i32) -> Result<u8, Self::Error> {
+    fn ec_read_u8(&self, offset: i32) -> Result<u8> {
         ec_read_any(self, offset)
     }
-    fn ec_read_u16(&self, offset: i32) -> Result<u16, Self::Error> {
+    fn ec_read_u16(&self, offset: i32) -> Result<u16> {
         ec_read_any(self, offset)
     }
-    fn ec_read_u32(&self, offset: i32) -> Result<u32, Self::Error> {
+    fn ec_read_u32(&self, offset: i32) -> Result<u32> {
         ec_read_any(self, offset)
     }
 }

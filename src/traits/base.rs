@@ -1,3 +1,5 @@
+use rustix::io::Errno;
+
 use crate::{
     error::EcCommandError,
     types::{EcCommandInfo, MaskT},
@@ -20,13 +22,12 @@ pub trait EcHasCommand {
 }
 
 pub trait EcHasReadmem {
-    type Error;
     /// Return the content of the EC information area mapped as "memory". The
     /// offsets are defined by the `EC_MEMMAP_` constants. Returns the number of
     /// bytes read.
     ///
     /// COMPATIBILITY NOTE: Reading strings is a TODO.
-    fn ec_readmem(&self, offset: i32, output: &mut [u8]) -> Result<usize, Self::Error>;
+    fn ec_readmem(&self, offset: i32, output: &mut [u8]) -> Result<usize, Errno>;
 }
 
 pub trait EcHasPollevent {
