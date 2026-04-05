@@ -1,2 +1,2 @@
-pub mod invalid_response;
-pub mod slice;
+pub(crate) mod invalid_response;
+pub(crate) mod slice;

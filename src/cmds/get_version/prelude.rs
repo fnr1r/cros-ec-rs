@@ -1,3 +1,3 @@
-pub use plain::Plain;
+pub(super) use plain::Plain;
 
-pub use super::{super::prelude::*, EcImageType, EcVersion, VersionStr};
+pub(super) use super::{super::prelude::*, EcImageType, EcVersion, VersionStr};

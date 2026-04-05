@@ -1,6 +1,6 @@
-pub use crate::{
+pub(crate) use crate::{
     error::EcCommandError,
     traits::{EcCommandExt, EcHasCommand},
 };
 
-pub type Result<T, E = EcCommandError> = core::result::Result<T, E>;
+pub(crate) type Result<T, E = EcCommandError> = core::result::Result<T, E>;

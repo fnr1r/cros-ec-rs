@@ -6,5 +6,5 @@ mod raw;
 mod safe;
 
 mod prelude {
-    pub use super::super::prelude::*;
+    pub(super) use super::super::prelude::*;
 }

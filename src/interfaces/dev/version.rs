@@ -9,7 +9,7 @@ use thiserror::Error;
 use crate::consts::CROS_EC_DEV_VERSION;
 
 #[derive(Debug, Error)]
-pub enum DevVersionErrorKind {
+pub(super) enum DevVersionErrorKind {
     #[error("read failed: {}", _0)]
     Read(#[from] IoError),
     #[error("invalid: {}", _0)]
@@ -34,7 +34,10 @@ impl DevVersionError {
     }
 }
 
-pub fn ec_dev_read_version_check(file: &mut File, path: &Path) -> Result<(), DevVersionError> {
+pub(super) fn ec_dev_read_version_check(
+    file: &mut File,
+    path: &Path,
+) -> Result<(), DevVersionError> {
     let err = |kind| DevVersionError::new(path, kind);
     let mut buf = [0; 80];
     let len = file.read(&mut buf).map_err(|e| err(e.into()))?;

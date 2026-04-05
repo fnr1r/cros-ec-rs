@@ -6,7 +6,7 @@ pub mod v1;
 pub mod v2;
 
 mod prelude {
-    pub use plain::Plain;
+    pub(super) use plain::Plain;
 
-    pub use super::super::prelude::*;
+    pub(super) use super::super::prelude::*;
 }
