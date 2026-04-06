@@ -41,6 +41,20 @@ impl EcDevBackendCommand for Dynamic {
     }
 }
 
+impl EcDevBackendReadmem for Dynamic {
+    fn ec_readmem(&self, fd: impl AsFd, offset: i32, output: &mut [u8]) -> Result<usize, Errno> {
+        let f = match self.version {
+            V1 => todo!(
+                "V1 unimplemented; off: {}; output: {:?}",
+                offset,
+                output.as_ptr()
+            ),
+            V2 => ec_dev_v2_readmem,
+        };
+        f(fd, offset, output)
+    }
+}
+
 impl EcDevBackendNew for Dynamic {
     fn ec_dev_new(fd: impl AsFd) -> Result<Self, EcDevError> {
         Ok(if ec_dev_is_v1(&fd)? { V1 } else { V2 }.into())
