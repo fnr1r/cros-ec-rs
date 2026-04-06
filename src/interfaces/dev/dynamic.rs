@@ -33,10 +33,9 @@ impl EcDevBackendCommand for Dynamic {
         input: Option<&[u8]>,
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError> {
-        use EcDevVersion as E;
         let f = match self.version {
-            E::V1 => ec_dev_v1_command,
-            E::V2 => ec_dev_v2_command,
+            V1 => ec_dev_v1_command,
+            V2 => ec_dev_v2_command,
         };
         unsafe { f(fd, command, input, output) }
     }
