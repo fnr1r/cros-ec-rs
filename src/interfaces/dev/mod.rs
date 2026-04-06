@@ -1,5 +1,5 @@
 pub use self::{
-    dynamic::Dynamic as IfaceDynamic,
+    dynamic::{Dynamic as IfaceDynamic, EcDevVersion},
     error::EcDevError,
     iface::EcDev,
     v1::{IfaceV1, ec_dev_v1_command},
@@ -19,10 +19,4 @@ mod iface_prelude {
 
     pub(super) use super::{EcDev, EcDevError, ec_dev_v1_command, ec_dev_v2_command, traits::*};
     pub(super) use crate::{error::EcCommandError, types::EcCommandInfo};
-}
-
-#[derive(Debug, Clone, Copy)]
-pub enum EcDevVersion {
-    V1,
-    V2,
 }

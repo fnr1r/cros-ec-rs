@@ -1,8 +1,11 @@
-use super::{
-    EcDevVersion::{self, *},
-    iface_prelude::*,
-    v1::check::ec_dev_is_v1,
-};
+use self::EcDevVersion::*;
+use super::{iface_prelude::*, v1::check::ec_dev_is_v1};
+
+#[derive(Debug, Clone, Copy)]
+pub enum EcDevVersion {
+    V1,
+    V2,
+}
 
 #[derive(Debug, Clone)]
 pub struct Dynamic {
