@@ -1,0 +1,59 @@
+use core::{
+    fmt::{Debug, Formatter, Result as FmtResult},
+    marker::PhantomData,
+    mem::transmute,
+};
+
+use derive_more::Deref;
+
+use super::{EcFeatures, ec_features_from_u32s};
+use crate::{
+    cmds::get_features::{GetFeaturesResponse, ec_cmd_get_features},
+    error::EcCommandError,
+    traits::EcHasCommand,
+};
+
+type Result<T, E = EcCommandError> = core::result::Result<T, E>;
+
+const fn ec_features_from_resp(v: GetFeaturesResponse) -> EcFeatures {
+    ec_features_from_u32s(v.flags)
+}
+
+pub trait EcProxy {
+    fn get_required_features() -> impl Into<EcFeatures>;
+}
+
+/// Wrapper that asserts that the EC has features required by `P`
+#[derive(Deref)]
+#[repr(transparent)]
+pub struct Proxy<T, P: EcProxy>(#[deref] T, PhantomData<P>);
+
+impl<T, P: EcProxy> Proxy<T, P> {
+    /// # Safety
+    ///
+    /// If the EC doesn't support said features, wild things may happen.
+    pub const unsafe fn new_unchecked(iface: &T) -> &Self {
+        // SAFETY: Self is repr(transparent)
+        unsafe { transmute::<&T, &Self>(iface) }
+    }
+    pub fn new(iface: &T) -> Result<Option<&Self>>
+    where
+        T: EcHasCommand,
+    {
+        let features = ec_features_from_resp(ec_cmd_get_features(iface)?);
+        Ok(if features.contains(P::get_required_features()) {
+            Some(unsafe { Self::new_unchecked(iface) })
+        } else {
+            None
+        })
+    }
+}
+
+impl<T: Debug, P: EcProxy> Debug for Proxy<T, P> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        f.debug_tuple("Proxy")
+            .field(&self.0)
+            .field(&self.1)
+            .finish()
+    }
+}
