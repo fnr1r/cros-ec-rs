@@ -55,3 +55,13 @@ pub fn get_fan_rpm(
 ) -> Result<Option<NonMaxU16>> {
     get_fan_rpm_unchecked(iface, idx).map(NonMaxU16::new)
 }
+
+#[inline]
+pub fn get_num_fans(iface: &ProxyFanRpm<impl EcHasReadmem>) -> Result<u8> {
+    (0..EC_FAN_SPEED_ENTRIES)
+        .map_while(|e| get_fan_rpm(iface, e).transpose())
+        .try_fold(0, |count, speed| {
+            speed?;
+            Ok(count + 1)
+        })
+}
