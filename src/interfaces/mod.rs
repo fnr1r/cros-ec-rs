@@ -1,3 +1,5 @@
+pub use self::dev::EcDev;
+
 pub mod dev;
 
 // This should be bitflags
