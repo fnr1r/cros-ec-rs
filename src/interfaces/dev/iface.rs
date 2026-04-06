@@ -6,13 +6,14 @@ use std::{
 };
 
 use derive_more::Deref;
+use rustix::io::Errno;
 
 use super::{dynamic::Dynamic, error::EcDevError, traits::*, version::ec_dev_read_version_check};
 use crate::{
     cmds::hello::{EcHelloError, ec_cmd_hello},
     consts::CROS_EC_DEV_PATH,
     error::EcCommandError,
-    traits::EcHasCommand,
+    traits::{EcHasCommand, EcHasReadmem},
     types::EcCommandInfo,
 };
 
@@ -95,5 +96,11 @@ impl<F: AsFd, I: EcDevBackendCommand> EcHasCommand for EcDev<F, I> {
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError> {
         unsafe { self.iface.ec_command(&self.file, command, input, output) }
+    }
+}
+
+impl<F: AsFd, I: EcDevBackendReadmem> EcHasReadmem for EcDev<F, I> {
+    fn ec_readmem(&self, offset: i32, output: &mut [u8]) -> Result<usize, Errno> {
+        self.iface.ec_readmem(&self.file, offset, output)
     }
 }

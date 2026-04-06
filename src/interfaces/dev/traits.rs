@@ -1,5 +1,7 @@
 use std::os::fd::AsFd;
 
+use rustix::io::Errno;
+
 use super::EcDevError;
 use crate::{error::EcCommandError, types::EcCommandInfo};
 
@@ -21,6 +23,10 @@ pub trait EcDevBackendCommand {
         input: Option<&[u8]>,
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError>;
+}
+
+pub trait EcDevBackendReadmem {
+    fn ec_readmem(&self, fd: impl AsFd, offset: i32, output: &mut [u8]) -> Result<usize, Errno>;
 }
 
 pub trait EcDevBackendNew: Sized {
