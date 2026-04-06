@@ -7,14 +7,7 @@ use std::{
 
 use derive_more::Deref;
 
-use super::{
-    EcDevVersion::*,
-    dynamic::Dynamic,
-    error::EcDevError,
-    traits::{EcDevBackendCommand, EcDevBackendEmpty},
-    v1::ec_dev_is_v1,
-    version::ec_dev_read_version_check,
-};
+use super::{dynamic::Dynamic, error::EcDevError, traits::*, version::ec_dev_read_version_check};
 use crate::{
     cmds::hello::{EcHelloError, ec_cmd_hello},
     consts::CROS_EC_DEV_PATH,
@@ -63,10 +56,10 @@ impl<F: AsFd, I: EcDevBackendEmpty> EcDev<F, I> {
     }
 }
 
-impl<F: AsFd> EcDev<F> {
-    pub fn dyn_new(file: F) -> Result<Self> {
-        let version = if ec_dev_is_v1(&file)? { V1 } else { V2 };
-        Ok(Self::new_unchecked(file, version.into()))
+impl<F: AsFd, I: EcDevBackendNew> EcDev<F, I> {
+    pub fn new(file: F) -> Result<Self> {
+        let iface = I::ec_dev_new(&file)?;
+        Ok(Self::new_unchecked(file, iface))
     }
 }
 
@@ -74,19 +67,23 @@ fn rwopen(path: impl AsRef<Path>) -> Result<File, IoError> {
     OpenOptions::new().read(true).write(true).open(path)
 }
 
-impl EcDev {
-    pub fn dyn_open(path: impl AsRef<Path>) -> Result<Self> {
+impl<I: EcDevBackendNew> EcDev<File, I> {
+    pub fn open(path: impl AsRef<Path>) -> Result<Self> {
         let path = path.as_ref();
         let mut file = rwopen(path).map_err(EcDevError::Open)?;
         ec_dev_read_version_check(&mut file, path)?;
-        Self::dyn_new(file)
+        EcDev::new(file)
     }
     pub fn open_by_name(name: impl AsRef<str>) -> Result<Self> {
-        Self::dyn_open(Path::new("/dev").join(name.as_ref()))
+        Self::open(Path::new("/dev").join(name.as_ref()))
     }
+}
+
+// NOTE: The above impl doesn't default I to Default for some reason.
+impl EcDev {
     /// Creates a [`EcDev`] from [`CROS_EC_DEV_PATH`]
     pub fn open_cros_ec() -> Result<Self> {
-        Self::dyn_open(CROS_EC_DEV_PATH)
+        Self::open(CROS_EC_DEV_PATH)
     }
 }
 

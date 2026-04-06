@@ -1,4 +1,8 @@
-use super::{EcDevVersion, iface_prelude::*};
+use super::{
+    EcDevVersion::{self, *},
+    iface_prelude::*,
+    v1::check::ec_dev_is_v1,
+};
 
 #[derive(Debug, Clone)]
 pub struct Dynamic {
@@ -32,5 +36,11 @@ impl EcDevBackendCommand for Dynamic {
             E::V2 => ec_dev_v2_command,
         };
         unsafe { f(fd, command, input, output) }
+    }
+}
+
+impl EcDevBackendNew for Dynamic {
+    fn ec_dev_new(fd: impl AsFd) -> Result<Self, EcDevError> {
+        Ok(if ec_dev_is_v1(&fd)? { V1 } else { V2 }.into())
     }
 }

@@ -19,3 +19,5 @@ impl EcDevBackendCommand for V2 {
         unsafe { ec_dev_v2_command(fd, command, input, output) }
     }
 }
+
+crate::ec_dev_backend_new_impl_empty!(V2);
