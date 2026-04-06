@@ -1,5 +1,6 @@
 use std::os::fd::AsFd;
 
+use const_default::ConstDefault;
 use rustix::io::Errno;
 
 use super::EcDevError;
@@ -11,9 +12,7 @@ use crate::{error::EcCommandError, types::EcCommandInfo};
 ///
 /// This should only be implemented on unit structs, and only version interfaces
 /// specifically.
-pub unsafe trait EcDevBackendEmpty {
-    const INSTANCE: Self;
-}
+pub unsafe trait EcDevBackendEmpty: ConstDefault {}
 
 pub trait EcDevBackendCommand {
     unsafe fn ec_command(
@@ -35,13 +34,19 @@ pub trait EcDevBackendNew: Sized {
 
 #[doc(hidden)]
 #[macro_export]
-macro_rules! ec_dev_backend_new_impl_empty {
-    ($name:ident) => {
+macro_rules! ec_dev_backend_ver_impl {
+    ($name:path) => {
+        impl ConstDefault for $name {
+            const DEFAULT: Self = Self;
+        }
+
+        unsafe impl EcDevBackendEmpty for $name {}
+
         impl EcDevBackendNew for $name {
             fn ec_dev_new(fd: impl AsFd) -> Result<Self, EcDevError> {
-                let iface = EcDev::new_unchecked(fd, Self::INSTANCE);
+                let iface = EcDev::<_, Self>::ver_new_unchecked(fd);
                 $crate::cmds::hello::ec_cmd_hello(&iface)?;
-                Ok(Self::INSTANCE)
+                Ok(Self::DEFAULT)
             }
         }
     };

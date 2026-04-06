@@ -3,9 +3,7 @@ use super::super::iface_prelude::*;
 #[derive(Debug, Clone)]
 pub struct V1;
 
-unsafe impl EcDevBackendEmpty for V1 {
-    const INSTANCE: Self = Self;
-}
+crate::ec_dev_backend_ver_impl!(V1);
 
 impl EcDevBackendCommand for V1 {
     #[inline]
@@ -19,5 +17,3 @@ impl EcDevBackendCommand for V1 {
         unsafe { ec_dev_v1_command(fd, command, input, output) }
     }
 }
-
-crate::ec_dev_backend_new_impl_empty!(V1);

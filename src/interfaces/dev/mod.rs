@@ -17,6 +17,7 @@ mod version;
 mod iface_prelude {
     pub(super) use std::os::fd::AsFd;
 
+    pub(super) use const_default::ConstDefault;
     pub(super) use rustix::io::Errno;
 
     pub(super) use super::{

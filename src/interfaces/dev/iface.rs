@@ -45,7 +45,7 @@ impl<F: AsFd, I> EcDev<F, I> {
 
 impl<F: AsFd, I: EcDevBackendEmpty> EcDev<F, I> {
     pub const fn ver_new_unchecked(file: F) -> Self {
-        Self::new_unchecked(file, I::INSTANCE)
+        Self::new_unchecked(file, I::DEFAULT)
     }
 }
 
