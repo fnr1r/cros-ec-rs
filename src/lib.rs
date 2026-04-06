@@ -12,6 +12,7 @@ pub mod cmds;
 pub mod consts;
 pub mod error;
 pub mod interfaces;
+pub mod memmap;
 pub mod traits;
 pub mod types;
 mod utils;
