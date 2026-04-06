@@ -17,7 +17,7 @@ use crate::{
 
 #[derive(Debug, new)]
 #[repr(C)]
-pub struct CrosEcCommandV1 {
+pub struct DevCommandV1 {
     // Command version number (often 0)
     pub version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)
@@ -35,7 +35,7 @@ pub struct CrosEcCommandV1 {
     pub result: u32,
 }
 
-impl CrosEcCommandV1 {
+impl DevCommandV1 {
     fn new_sliced(
         command: &EcCommandInfo,
         input: Option<&[u8]>,
@@ -50,18 +50,18 @@ impl CrosEcCommandV1 {
     }
 }
 
-/// This is here to avoid leaking a Ioctl impl for [`CrosEcCommandV1`]
+/// This is here to avoid leaking a Ioctl impl for [`DevCommandV1`]
 #[derive(Debug, Deref)]
 #[repr(transparent)]
-struct CrosEcCommandV1Wrap<'a>(#[deref] CrosEcCommandV1, PhantomData<&'a ()>);
+struct DevCommandV1Wrap<'a>(#[deref] DevCommandV1, PhantomData<&'a ()>);
 
-impl<'a> CrosEcCommandV1Wrap<'a> {
+impl<'a> DevCommandV1Wrap<'a> {
     fn new_sliced(
         command: &EcCommandInfo,
         input: Option<&'a [u8]>,
         output: Option<&'a mut [u8]>,
     ) -> Self {
-        let inner = CrosEcCommandV1::new_sliced(command, input, output);
+        let inner = DevCommandV1::new_sliced(command, input, output);
         Self(inner, PhantomData)
     }
     unsafe fn from_ptr_mut<T>(this: *mut T) -> &'a mut Self {
@@ -69,7 +69,7 @@ impl<'a> CrosEcCommandV1Wrap<'a> {
     }
 }
 
-unsafe impl Ioctl for CrosEcCommandV1Wrap<'_> {
+unsafe impl Ioctl for DevCommandV1Wrap<'_> {
     type Output = (u32, u32);
     const IS_MUTATING: bool = true;
     fn opcode(&self) -> Opcode {
@@ -103,7 +103,7 @@ pub unsafe fn ec_command_dev_v1(
     input: Option<&[u8]>,
     output: Option<&mut [u8]>,
 ) -> Result<usize, EcCommandError> {
-    let cmd = CrosEcCommandV1Wrap::new_sliced(command, input, output);
+    let cmd = DevCommandV1Wrap::new_sliced(command, input, output);
     let (result, len) = unsafe { ioctl(fd, cmd) }?;
     EcError::from_ec_result(result)?;
     Ok(len as usize)

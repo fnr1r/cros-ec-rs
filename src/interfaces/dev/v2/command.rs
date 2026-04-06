@@ -18,7 +18,7 @@ use crate::{
 
 #[derive(Debug, new)]
 #[repr(C)]
-pub struct CrosEcCommandV2Header {
+pub struct DevCommandV2Header {
     // Command version number (often 0)
     pub version: VersionT,
     // Command to send (prefixed with `EC_CMD_`)
@@ -32,17 +32,17 @@ pub struct CrosEcCommandV2Header {
     pub result: u32,
 }
 
-impl CrosEcCommandV2Header {
+impl DevCommandV2Header {
     fn data_len(&self) -> usize {
         max(self.insize, self.outsize) as usize
     }
 }
 
-type CrosEcCommandV2Inner = SliceWithHeader<CrosEcCommandV2Header, u8>;
+type DevCommandV2Inner = SliceWithHeader<DevCommandV2Header, u8>;
 
 #[ext]
-impl CrosEcCommandV2Inner {
-    type Header = CrosEcCommandV2Header;
+impl DevCommandV2Inner {
+    type Header = DevCommandV2Header;
     fn header_as_ptr_mut(&mut self) -> *mut Self {
         self as _
     }
@@ -55,18 +55,18 @@ impl CrosEcCommandV2Inner {
 /// for this design
 #[derive(Debug)]
 #[repr(C)]
-struct CrosEcCommandV2(Box<CrosEcCommandV2Inner>);
+struct DevCommandV2(Box<DevCommandV2Inner>);
 
-impl CrosEcCommandV2 {
+impl DevCommandV2 {
     fn new(version: VersionT, command: CommandT, outsize: u32, insize: u32) -> Self {
-        let header = CrosEcCommandV2Header::new(version, command, outsize, insize);
+        let header = DevCommandV2Header::new(version, command, outsize, insize);
         let data_len = header.data_len();
         let this = SliceWithHeader::from_iter(header, repeat_n(0, data_len));
         Self(this)
     }
 }
 
-unsafe impl Ioctl for &mut CrosEcCommandV2 {
+unsafe impl Ioctl for &mut DevCommandV2 {
     type Output = usize;
     const IS_MUTATING: bool = true;
     fn opcode(&self) -> Opcode {
@@ -102,7 +102,7 @@ pub unsafe fn ec_command_dev_v2(
     let EcCommandInfo { command, version } = *command;
     let outsize = input.map(|e| e.len() as u32).unwrap_or_default();
     let insize = output.as_ref().map(|e| e.len() as u32).unwrap_or_default();
-    let mut cmd = CrosEcCommandV2::new(version, command, outsize, insize);
+    let mut cmd = DevCommandV2::new(version, command, outsize, insize);
     if let Some(input) = input {
         slice_copy_min_len(input, &mut cmd.0.slice);
     }
