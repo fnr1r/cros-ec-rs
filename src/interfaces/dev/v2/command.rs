@@ -93,7 +93,7 @@ unsafe impl Ioctl for &mut DevCommandV2 {
 /// # Safety
 ///
 /// This calls abstract EC commands. It *should* be memory safe though.
-pub unsafe fn ec_command_dev_v2(
+pub unsafe fn ec_dev_v2_command(
     fd: impl AsFd,
     command: &EcCommandInfo,
     input: Option<&[u8]>,

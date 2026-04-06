@@ -2,7 +2,7 @@ use std::{fs::File, os::fd::AsFd};
 
 use derive_more::Deref;
 
-use super::command::ec_command_dev_v1;
+use super::command::ec_dev_v1_command;
 use crate::{
     cmds::hello::{EcHelloError, ec_cmd_hello},
     error::EcCommandError,
@@ -36,6 +36,6 @@ impl<F: AsFd> EcHasCommand for EcDevV1<F> {
         output: Option<&mut [u8]>,
     ) -> Result<usize, EcCommandError> {
         let fd = &self.0;
-        unsafe { ec_command_dev_v1(fd, command, input, output) }
+        unsafe { ec_dev_v1_command(fd, command, input, output) }
     }
 }

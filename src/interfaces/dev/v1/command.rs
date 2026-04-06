@@ -97,7 +97,7 @@ unsafe impl Ioctl for DevCommandV1Wrap<'_> {
 /// # Safety
 ///
 /// This calls abstract EC commands. It *should* be memory safe though.
-pub unsafe fn ec_command_dev_v1(
+pub unsafe fn ec_dev_v1_command(
     fd: impl AsFd,
     command: &EcCommandInfo,
     input: Option<&[u8]>,

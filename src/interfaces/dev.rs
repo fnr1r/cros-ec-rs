@@ -99,8 +99,8 @@ impl<F: AsFd> EcHasCommand for EcDev<F> {
     ) -> Result<usize, EcCommandError> {
         let fd = &self.file;
         let f = match self.version {
-            V1 => v1::command::ec_command_dev_v1,
-            V2 => v2::command::ec_command_dev_v2,
+            V1 => v1::command::ec_dev_v1_command,
+            V2 => v2::command::ec_dev_v2_command,
         };
         unsafe { f(fd, command, input, output) }
     }
