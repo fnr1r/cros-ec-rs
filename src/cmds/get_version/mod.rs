@@ -1,3 +1,4 @@
+use const_default::ConstDefault;
 use strum::FromRepr;
 
 pub use super::consts::{EC_CMD_GET_VERSION_V0, EC_CMD_GET_VERSION_V1};
@@ -35,8 +36,7 @@ pub struct EcVersion {
     pub cros_fwid_rw: Option<VersionStr>,
 }
 
-impl EcVersion {
-    // TODO: Move to const-default
+impl ConstDefault for EcVersion {
     const DEFAULT: Self = Self {
         version_string_ro: VersionStr::DEFAULT,
         version_string_rw: VersionStr::DEFAULT,

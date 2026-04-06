@@ -1,5 +1,6 @@
 use core::iter::repeat_n;
 
+use const_default::ConstDefault;
 use plain::{as_bytes, as_mut_bytes};
 use unslice_dst::SliceWithHeader;
 
@@ -15,7 +16,7 @@ pub struct FlashInfoV2Params {
 
 unsafe impl Plain for FlashInfoV2Params {}
 
-impl FlashInfoV2Params {
+impl ConstDefault for FlashInfoV2Params {
     const DEFAULT: Self = Self {
         num_banks_desc: 1,
         reserved: [0; 2],
@@ -45,7 +46,7 @@ pub struct FlashInfoV2Header {
 
 unsafe impl Plain for FlashInfoV2Header {}
 
-impl FlashInfoV2Header {
+impl ConstDefault for FlashInfoV2Header {
     const DEFAULT: Self = Self {
         flash_size: 0,
         flags: 0,
@@ -53,6 +54,9 @@ impl FlashInfoV2Header {
         num_banks_total: 0,
         num_banks_desc: 0,
     };
+}
+
+impl FlashInfoV2Header {
     const fn with_len(len: usize) -> Self {
         Self {
             num_banks_desc: len as u16,

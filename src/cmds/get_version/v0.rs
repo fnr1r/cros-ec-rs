@@ -1,3 +1,5 @@
+use const_default::ConstDefault;
+
 use super::{EC_CMD_GET_VERSION_V0, prelude::*};
 
 #[derive(Debug, Default)]

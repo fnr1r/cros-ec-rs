@@ -4,6 +4,7 @@ use core::{
 };
 
 use bstr::ByteSlice;
+use const_default::ConstDefault;
 use derive_more::Deref;
 use plain::Plain;
 
@@ -35,9 +36,8 @@ impl<const N: usize> Debug for SizedCString<N> {
     }
 }
 
-impl<const N: usize> SizedCString<N> {
-    // TODO: Move to const-default
-    pub const DEFAULT: Self = Self([0; N]);
+impl<const N: usize> ConstDefault for SizedCString<N> {
+    const DEFAULT: Self = Self([0; N]);
 }
 
 impl<const N: usize> Default for SizedCString<N> {

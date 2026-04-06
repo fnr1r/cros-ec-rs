@@ -1,3 +1,5 @@
+use const_default::ConstDefault;
+
 use super::{consts::*, prelude::*, raw::*};
 
 #[derive(Debug, Clone, Default)]
@@ -42,14 +44,16 @@ impl From<EcFwChargeLimitConfig> for EcFwChargeLimitParams {
     }
 }
 
-impl EcFwChargeLimitConfig {
-    // TODO: Move to const-default
-    pub const DEFAULT: Self = Self {
+impl ConstDefault for EcFwChargeLimitConfig {
+    const DEFAULT: Self = Self {
         do_clear: false,
         do_set: None,
         do_query: false,
         do_override: false,
     };
+}
+
+impl EcFwChargeLimitConfig {
     pub const CLEAR: Self = Self {
         do_clear: true,
         ..Self::DEFAULT

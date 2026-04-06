@@ -1,3 +1,4 @@
+use const_default::ConstDefault;
 use plain::Plain;
 
 use super::{EC_CMD_FW_CHARGE_LIMIT, prelude::*};
@@ -10,9 +11,8 @@ pub struct EcFwChargeLimitParams {
     pub limit: u16,
 }
 
-impl EcFwChargeLimitParams {
-    // TODO: Move to const-default
-    pub const DEFAULT: Self = Self { flags: 0, limit: 0 };
+impl ConstDefault for EcFwChargeLimitParams {
+    const DEFAULT: Self = Self { flags: 0, limit: 0 };
 }
 
 #[derive(Debug, Default)]
@@ -23,8 +23,8 @@ pub struct EcFwChargeLimitResponse {
 
 unsafe impl Plain for EcFwChargeLimitResponse {}
 
-impl EcFwChargeLimitResponse {
-    pub const DEFAULT: Self = Self { limit: 0 };
+impl ConstDefault for EcFwChargeLimitResponse {
+    const DEFAULT: Self = Self { limit: 0 };
 }
 
 const RESPONSE_SIZE: usize = size_of::<EcFwChargeLimitResponse>();
