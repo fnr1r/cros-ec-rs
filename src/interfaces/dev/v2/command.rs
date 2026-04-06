@@ -9,7 +9,7 @@ use rustix::{
 };
 use unslice_dst::SliceWithHeader;
 
-use super::consts::CROS_EC_DEV_IOCXCMD_V2;
+use super::CROS_EC_DEV_IOCXCMD_V2;
 use crate::{
     error::{EcCommandError, EcError},
     types::{CommandT, EcCommandInfo, VersionT},

@@ -8,7 +8,7 @@ use rustix::{
     ioctl::{Ioctl, IoctlOutput, Opcode, ioctl},
 };
 
-use super::consts::CROS_EC_DEV_IOCXCMD;
+use super::CROS_EC_DEV_IOCXCMD;
 use crate::{
     error::{EcCommandError, EcError},
     types::{CommandT, EcCommandInfo, VersionT},

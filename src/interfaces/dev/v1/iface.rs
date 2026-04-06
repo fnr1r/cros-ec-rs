@@ -2,7 +2,7 @@ use std::{fs::File, os::fd::AsFd};
 
 use derive_more::Deref;
 
-use super::command::ec_dev_v1_command;
+use super::ec_dev_v1_command;
 use crate::{
     cmds::hello::{EcHelloError, ec_cmd_hello},
     error::EcCommandError,

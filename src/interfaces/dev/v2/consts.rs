@@ -1,6 +1,6 @@
 use rustix::ioctl::{Opcode, opcode::read_write};
 
-use super::command::DevCommandV2Header;
+use super::DevCommandV2Header;
 
 pub const CROS_EC_DEV_IOC_V2: u8 = 0xEC;
 pub const CROS_EC_DEV_IOCXCMD_V2: Opcode = read_write::<DevCommandV2Header>(CROS_EC_DEV_IOC_V2, 0);

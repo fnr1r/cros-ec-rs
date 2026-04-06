@@ -10,9 +10,10 @@ use thiserror::Error;
 
 use self::{
     EcDevVersion::*,
-    v1::check::ec_dev_is_v1,
+    v1::ec_dev_is_v1,
     version::{DevVersionError, ec_dev_read_version_check},
 };
+pub use self::{v1::ec_dev_v1_command, v2::ec_dev_v2_command};
 use crate::{
     cmds::hello::{EcHelloError, ec_cmd_hello},
     consts::CROS_EC_DEV_PATH,
@@ -99,8 +100,8 @@ impl<F: AsFd> EcHasCommand for EcDev<F> {
     ) -> Result<usize, EcCommandError> {
         let fd = &self.file;
         let f = match self.version {
-            V1 => v1::command::ec_dev_v1_command,
-            V2 => v2::command::ec_dev_v2_command,
+            V1 => ec_dev_v1_command,
+            V2 => ec_dev_v2_command,
         };
         unsafe { f(fd, command, input, output) }
     }
