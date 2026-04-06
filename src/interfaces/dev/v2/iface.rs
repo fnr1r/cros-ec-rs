@@ -20,4 +20,11 @@ impl EcDevBackendCommand for V2 {
     }
 }
 
+impl EcDevBackendReadmem for V2 {
+    #[inline]
+    fn ec_readmem(&self, fd: impl AsFd, offset: i32, output: &mut [u8]) -> Result<usize, Errno> {
+        ec_dev_v2_readmem(fd, offset, output)
+    }
+}
+
 crate::ec_dev_backend_new_impl_empty!(V2);

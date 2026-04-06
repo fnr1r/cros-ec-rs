@@ -17,6 +17,10 @@ mod version;
 mod iface_prelude {
     pub(super) use std::os::fd::AsFd;
 
-    pub(super) use super::{EcDev, EcDevError, ec_dev_v1_command, ec_dev_v2_command, traits::*};
+    pub(super) use rustix::io::Errno;
+
+    pub(super) use super::{
+        EcDev, EcDevError, ec_dev_v1_command, ec_dev_v2_command, ec_dev_v2_readmem, traits::*,
+    };
     pub(super) use crate::{error::EcCommandError, types::EcCommandInfo};
 }
