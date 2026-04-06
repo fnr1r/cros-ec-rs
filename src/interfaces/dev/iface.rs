@@ -10,7 +10,6 @@ use rustix::io::Errno;
 
 use super::{dynamic::Dynamic, error::EcDevError, traits::*, version::ec_dev_read_version_check};
 use crate::{
-    cmds::hello::{EcHelloError, ec_cmd_hello},
     consts::CROS_EC_DEV_PATH,
     error::EcCommandError,
     traits::{EcHasCommand, EcHasReadmem},
@@ -31,9 +30,11 @@ pub struct EcDev<F: AsFd = File, I = Dynamic> {
 }
 
 impl<F: AsFd, I> EcDev<F, I> {
-    /// Creates an [`EcDev`] without sending a [`hello`](ec_cmd_hello) command
+    /// Creates an [`EcDev`] without sending a [`hello`] command
     ///
     /// Not marked as `unsafe` since any interface should error
+    ///
+    /// [`hello`]: crate::cmds::hello::ec_cmd_hello
     pub const fn new_unchecked(file: F, iface: I) -> Self {
         Self { file, iface }
     }
@@ -45,15 +46,6 @@ impl<F: AsFd, I> EcDev<F, I> {
 impl<F: AsFd, I: EcDevBackendEmpty> EcDev<F, I> {
     pub const fn ver_new_unchecked(file: F) -> Self {
         Self::new_unchecked(file, I::INSTANCE)
-    }
-    /// Create a new [`EcDev`] with a known version
-    pub fn ver_new(file: F) -> Result<Self, EcHelloError>
-    where
-        I: EcDevBackendCommand + EcDevBackendEmpty,
-    {
-        let this = Self::ver_new_unchecked(file);
-        ec_cmd_hello(&this)?;
-        Ok(this)
     }
 }
 
