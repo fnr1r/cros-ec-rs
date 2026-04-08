@@ -8,3 +8,4 @@ pub mod hello;
 mod prelude;
 pub mod proto_version;
 pub mod pwm;
+pub mod thermal;

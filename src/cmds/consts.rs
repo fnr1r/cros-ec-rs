@@ -35,3 +35,9 @@ pub(super) mod pwm {
     cmd!(pwm_set_fan_duty, 0, 1);
     cmd!(pwm_set_duty, 0);
 }
+
+pub(super) mod thermal {
+    use super::*;
+
+    cmd!(thermal_auto_fan_ctrl, 0, 1);
+}
