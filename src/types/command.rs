@@ -22,6 +22,7 @@ pub enum EcKnownCommand {
     PwmSetFanDuty = 0x0024,
     PwmSetDuty = 0x0025,
     PwmGetDuty = 0x0026,
+    ThermalAutoFanCtrl = 0x0052,
     FwChargeLimit = 0x3E03,
 }
 
