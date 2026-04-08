@@ -64,6 +64,11 @@ pub trait EcCommandExt: EcHasCommand {
     ) -> Result<usize> {
         unsafe { self.ec_command(command, input.into(), output.into()) }
     }
+    #[allow(clippy::missing_safety_doc)]
+    #[inline]
+    unsafe fn ec_cmd_send(&self, command: &Info) -> Result<()> {
+        unsafe { self.ec_cmd_wrap_into(command, None, None) }.map(drop)
+    }
     /// Sends a command with input data but no output. (A "setter").
     ///
     /// # Safety
