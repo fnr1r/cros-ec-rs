@@ -7,3 +7,4 @@ pub mod get_version;
 pub mod hello;
 mod prelude;
 pub mod proto_version;
+pub mod pwm;
