@@ -29,6 +29,7 @@ fn output_length_check<T>(len: usize) -> Result<()> {
 /// - `_w`: Receives data from the EC (**w**rites to output).
 /// - `_a`: **A**sserts that the received data size matches the output type's size.
 /// - `_d`: Uses a **d**efault-initialized struct for the output.
+/// - `_i`: **I**gnores received data size value. (should be 0)
 ///
 /// For example, `ec_cmd_ext_rwad` combines all of these: it sends data (`r`),
 /// receives data (`w`), asserts the size (`a`), and uses a default struct (`d`).
@@ -75,6 +76,19 @@ pub trait EcCommandExt: EcHasCommand {
         // SAFETY: types are repr(C) and match what's expected
         let input = unsafe { as_bytes(input) };
         unsafe { self.ec_cmd_wrap_into(command, input, None) }
+    }
+    /// Sends a command with input data but no output. (A "setter"). Drops the
+    /// bytes received value.
+    ///
+    /// # Safety
+    ///
+    /// The input type `I` must have a predictable memory layout and match the
+    /// EC command's expectation. See the trait-level safety documentation for
+    /// more information.
+    #[inline]
+    unsafe fn ec_cmd_ext_ri<I>(&self, command: &Info, input: &I) -> Result<()> {
+        // SAFETY: types are repr(C) and match what's expected
+        unsafe { self.ec_cmd_ext_r(command, input) }.map(drop)
     }
     /// Sends a command with no input but receives output. (A "getter").
     ///
