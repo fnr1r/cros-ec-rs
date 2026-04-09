@@ -11,6 +11,7 @@ use crate::{
     cmds::get_features::{GetFeaturesResponse, ec_cmd_get_features},
     error::EcCommandError,
     traits::EcHasCommand,
+    types::EcCommandInfo,
 };
 
 type Result<T, E = EcCommandError> = core::result::Result<T, E>;
@@ -55,5 +56,16 @@ impl<T: Debug, P: EcProxy> Debug for Proxy<T, P> {
             .field(&self.0)
             .field(&self.1)
             .finish()
+    }
+}
+
+impl<T: EcHasCommand, P: EcProxy> EcHasCommand for Proxy<T, P> {
+    unsafe fn ec_command(
+        &self,
+        command: &EcCommandInfo,
+        input: Option<&[u8]>,
+        output: Option<&mut [u8]>,
+    ) -> Result<usize> {
+        unsafe { self.0.ec_command(command, input, output) }
     }
 }
