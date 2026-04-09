@@ -5,12 +5,13 @@ use core::{
 };
 
 use derive_more::Deref;
+use rustix::io::Errno;
 
 use super::{EcFeatures, ec_features_from_u32s};
 use crate::{
     cmds::get_features::{GetFeaturesResponse, ec_cmd_get_features},
     error::EcCommandError,
-    traits::EcHasCommand,
+    traits::{EcHasCommand, EcHasReadmem},
     types::EcCommandInfo,
 };
 
@@ -67,5 +68,11 @@ impl<T: EcHasCommand, P: EcProxy> EcHasCommand for Proxy<T, P> {
         output: Option<&mut [u8]>,
     ) -> Result<usize> {
         unsafe { self.0.ec_command(command, input, output) }
+    }
+}
+
+impl<T: EcHasReadmem, P: EcProxy> EcHasReadmem for Proxy<T, P> {
+    fn ec_readmem(&self, offset: i32, output: &mut [u8]) -> Result<usize, Errno> {
+        self.0.ec_readmem(offset, output)
     }
 }
