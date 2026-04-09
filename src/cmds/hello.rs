@@ -71,7 +71,7 @@ const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = concat!(
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
     let output = unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT) }?;
     if output != EC_CMD_HELLO_OUTPUT {
-        debug_assert_eq!(
+        debug_assert_ne!(
             output, EC_CMD_HELLO_RESP,
             "{}",
             PROGRAMMER_IS_AN_IDIOT_ERROR
