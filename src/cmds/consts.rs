@@ -32,6 +32,8 @@ cmd!(fw_charge_limit, 0);
 pub(super) mod pwm {
     use super::*;
 
+    cmd!(pwm_get_fan_target_rpm, 0);
+    cmd!(pwm_set_fan_target_rpm, 0, 1);
     cmd!(pwm_set_fan_duty, 0, 1);
     cmd!(pwm_set_duty, 0);
 }
