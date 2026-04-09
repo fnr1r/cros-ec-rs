@@ -68,6 +68,10 @@ impl EcFwChargeLimitConfig {
             ..Self::DEFAULT
         }
     }
+    #[inline]
+    pub const fn with_query(self, do_query: bool) -> Self {
+        Self { do_query, ..self }
+    }
     pub const fn into_params(self) -> EcFwChargeLimitParams {
         EcFwChargeLimitParams::from_config(self)
     }
@@ -83,4 +87,20 @@ pub fn ec_cmd_fw_charge_limit_config(
     config: EcFwChargeLimitConfig,
 ) -> Result<Option<u16>> {
     Ok(ec_cmd_fw_charge_limit(iface, &config.as_params())?.map(|e| e.limit))
+}
+
+#[inline]
+pub fn ec_cmd_fw_charge_limit_config_get(
+    iface: &impl EcHasCommand,
+    config: EcFwChargeLimitConfig,
+) -> Result<u16> {
+    ec_cmd_fw_charge_limit_config(iface, config.with_query(true)).map(Option::unwrap)
+}
+
+#[inline]
+pub fn ec_cmd_fw_charge_limit_config_set(
+    iface: &impl EcHasCommand,
+    config: EcFwChargeLimitConfig,
+) -> Result<()> {
+    ec_cmd_fw_charge_limit_config(iface, config.with_query(false)).map(drop)
 }
