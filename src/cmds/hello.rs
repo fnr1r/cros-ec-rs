@@ -9,6 +9,10 @@ use super::prelude::*;
 
 type HelloT = u32;
 
+pub fn ec_cmd_hello_v0(iface: &impl EcHasCommand, data: &HelloT) -> Result<HelloT> {
+    unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, data) }
+}
+
 pub const EC_CMD_HELLO_INPUT: HelloT = 0xa0b0c0d0;
 pub const EC_CMD_HELLO_RESP: HelloT = 0x01020304;
 pub const EC_CMD_HELLO_OUTPUT: HelloT = EC_CMD_HELLO_INPUT | EC_CMD_HELLO_RESP;
@@ -69,7 +73,7 @@ const PROGRAMMER_IS_AN_IDIOT_ERROR: &str = concat!(
 
 /// Sends a [`HELLO`](EC_CMD_HELLO) command to the EC and checks the result.
 pub fn ec_cmd_hello(iface: &impl EcHasCommand) -> Result<(), EcHelloError> {
-    let output = unsafe { iface.ec_cmd_ext_rwad(&EC_CMD_HELLO, &EC_CMD_HELLO_INPUT) }?;
+    let output = ec_cmd_hello_v0(iface, &EC_CMD_HELLO_INPUT)?;
     if output != EC_CMD_HELLO_OUTPUT {
         debug_assert_ne!(
             output, EC_CMD_HELLO_RESP,
