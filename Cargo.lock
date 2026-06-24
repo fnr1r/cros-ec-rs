@@ -266,8 +266,9 @@ checksum = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
 
 [[package]]
 name = "unslice-dst"
-version = "0.3.0"
-source = "git+https://github.com/fnr1r/unslice-dst.git?rev=v0.3.0_cros-ec#ce75d48c17762ea0b2db391258a1baf3c9661699"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14bf320820340a029afae689057c983b4debff7dfbb8a07f86a768ee9168d60a"
 dependencies = [
  "plain",
 ]

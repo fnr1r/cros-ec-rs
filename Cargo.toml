@@ -21,15 +21,11 @@ plain = "0.2"
 rustix = "1"
 strum = { version = "0.28", features = ["derive"] }
 thiserror = "2"
+unslice-dst = { version = "0.3.2", features = ["plain"] }
 
 [dependencies.derive_more]
 version = "2"
 features = ["deref"]
-
-[dependencies.unslice-dst]
-git = "https://github.com/fnr1r/unslice-dst.git"
-rev = "v0.3.0_cros-ec"
-features = ["plain"]
 
 [dev-dependencies]
 anyhow = "1"
