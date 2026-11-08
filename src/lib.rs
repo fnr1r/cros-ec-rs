@@ -7,6 +7,7 @@
 #![warn(missing_debug_implementations)]
 #![warn(unreachable_pub)]
 #![warn(clippy::std_instead_of_core)]
+#![allow(clippy::redundant_field_names)]
 
 pub mod cmds;
 pub mod consts;
