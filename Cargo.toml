@@ -23,7 +23,7 @@ plain = "0.2"
 rustix = "1"
 strum = { version = "0.28", features = ["derive"] }
 thiserror = "2"
-unslice-dst = { version = "0.3.2", features = ["plain"] }
+unslice-dst = { version = "0.4", features = ["plain"] }
 
 [dependencies.derive_more]
 version = "2"

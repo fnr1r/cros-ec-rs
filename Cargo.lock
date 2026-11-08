@@ -291,12 +291,19 @@ checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
 
 [[package]]
 name = "unslice-dst"
-version = "0.3.3"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13b9560863c3aa10abb5518be44a332f8f3e1cd566765c93ab58bfda51398212"
+checksum = "cf3c51524026f5359b1f8ff6e74c58ffd02c929585801ba675e5980b08f5066d"
 dependencies = [
  "plain",
+ "unslice-dst-cast",
 ]
+
+[[package]]
+name = "unslice-dst-cast"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b1f2c313d532f26fe2d3cf379763d14d3b1cb06fe16d82dde2e799379fca965f"
 
 [[package]]
 name = "windows-link"
